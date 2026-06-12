@@ -1354,6 +1354,124 @@ Instrucciones de estilo:
     return generateAiText(systemPrompt, userPrompt, fallbackText);
 }
 
+// =========================================================================
+// RETRO TECH DYNAMIC IMAGE RESOLVER
+// =========================================================================
+const retroImages = {
+    computer: "https://images.unsplash.com/photo-1551645121-d1034da75057?w=300&auto=format&fit=crop",
+    disk: "https://images.unsplash.com/photo-1599666505327-7758b44a9985?w=300&auto=format&fit=crop",
+    keyboard: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&auto=format&fit=crop",
+    tape: "https://images.unsplash.com/photo-1532244769018-9b3484f762f9?w=300&auto=format&fit=crop",
+    gamepad: "https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?w=300&auto=format&fit=crop",
+    circuit: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&auto=format&fit=crop",
+    phone: "https://images.unsplash.com/photo-1520923642038-b4a53cb6ca68?w=300&auto=format&fit=crop",
+    mouse: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=300&auto=format&fit=crop",
+    monitor: "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=300&auto=format&fit=crop",
+    generic: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&auto=format&fit=crop"
+};
+
+function getRetroImageUrl(title, category) {
+    const text = ((title || "") + " " + (category || "")).toLowerCase();
+    if (text.includes("disquete") || text.includes("disk") || text.includes("zip") || text.includes("floppy")) {
+        return retroImages.disk;
+    } else if (text.includes("teclado") || text.includes("keyboard") || text.includes("ibm model")) {
+        return retroImages.keyboard;
+    } else if (text.includes("auriculares") || text.includes("casete") || text.includes("tape") || text.includes("cinta") || text.includes("sound blaster")) {
+        return retroImages.tape;
+    } else if (text.includes("voodoo") || text.includes("tarjeta") || text.includes("procesador") || text.includes("slot") || text.includes("motherboard") || text.includes("card") || text.includes("isa") || text.includes("pci")) {
+        return retroImages.circuit;
+    } else if (text.includes("game") || text.includes("playstation") || text.includes("atari") || text.includes("nintendo") || text.includes("joystick") || text.includes("juego")) {
+        return retroImages.gamepad;
+    } else if (text.includes("módem") || text.includes("modem") || text.includes("teléfono") || text.includes("phone")) {
+        return retroImages.phone;
+    } else if (text.includes("mouse") || text.includes("ratón")) {
+        return retroImages.mouse;
+    } else if (text.includes("monitor") || text.includes("pantalla") || text.includes("crt") || text.includes("tv")) {
+        return retroImages.monitor;
+    } else if (text.includes("computadora") || text.includes("pc") || text.includes("ordenador")) {
+        return retroImages.computer;
+    }
+    return retroImages.generic;
+}
+
+function parseJsonFromLlm(text) {
+    if (!text) return null;
+    let clean = text.trim();
+    if (clean.startsWith("```")) {
+        clean = clean.replace(/^```(json)?/, "").replace(/```$/, "").trim();
+    }
+    try {
+        return JSON.parse(clean);
+    } catch (e) {
+        console.warn("[JSON PARSER] Failed to parse JSON:", e.message, "Text:", text);
+        return null;
+    }
+}
+
+async function generateBotProduct(botUser) {
+    if (!botUser) return null;
+    const systemPrompt = `Eres un usuario real de una comunidad retro y cyber-bazar en el año 2000.
+Tu apodo/usuario es: "${botUser.username}"
+Tu biografía/personalidad es: "${botUser.profileData?.bio || ''}"
+Tu ubicación es: "${botUser.profileData?.location || ''}"
+
+Instrucciones imperativas:
+1. Inventa un artículo tecnológico retro del año 2000 o antes que sea muy afín con tu personalidad e intereses para vender en el bazaar.
+2. Devuelve ÚNICAMENTE un objeto JSON válido con los siguientes campos exactos (sin explicaciones, sin markdown, solo el JSON raw):
+{
+  "title": "nombre corto del producto (ej: Tarjeta de Video Voodoo 3)",
+  "desc": "descripción llamativa y detallada al estilo de los años 90/2000",
+  "price": precio del producto en USD (número decimal realista entre 5 y 200),
+  "category": "categoría del producto (puedes crear una categoría especial y descriptiva como 'Hardware ISA', 'Modems', 'Criptografía', 'Software', 'Vintage Gaming', etc.)",
+  "condition": "Nuevo", "Usado - Buen Estado", o "Usado - Como Nuevo",
+  "icon": "un emoji único y apropiado para el artículo (ej: 💾, 💿, 📟, 🔌, 📼, ⌨️, ⚡)"
+}`;
+    const userPrompt = "Genera los detalles de un producto retro único que deseas vender en el bazaar en formato JSON.";
+    const responseText = await generateAiText(systemPrompt, userPrompt, "");
+    return parseJsonFromLlm(responseText);
+}
+
+async function generateBotForumThread(botUser) {
+    if (!botUser) return null;
+    const systemPrompt = `Eres un usuario real de una comunidad y cyber-bazar participando en el foro estilo phpBB en el año 2000.
+Tu apodo/usuario es: "${botUser.username}"
+Tu biografía/personalidad es: "${botUser.profileData?.bio || ''}"
+
+Instrucciones imperativas:
+1. Crea un nuevo hilo de discusión para el foro. Debe tratar sobre algún tema retro, cyberpunk, hardware clásico, quejas de estafas, dudas de seguridad PGP, o conspiraciones del efecto Y2K, alineado fuertemente con tus intereses.
+2. Devuelve ÚNICAMENTE un objeto JSON válido con los siguientes campos exactos:
+{
+  "category": "security", "arbitrage", o "scammers",
+  "title": "título corto y llamativo del hilo",
+  "content": "contenido del hilo, redactado de forma natural, informal y muy realista"
+}`;
+    const userPrompt = "Genera un nuevo hilo de discusión en formato JSON.";
+    const responseText = await generateAiText(systemPrompt, userPrompt, "");
+    return parseJsonFromLlm(responseText);
+}
+
+async function generateBotForumReply(botUser, thread) {
+    if (!botUser || !thread) return "";
+    const systemPrompt = `Eres un usuario real respondiendo a un hilo de discusión en un foro estilo phpBB en el año 2000.
+Tu apodo/usuario es: "${botUser.username}"
+Tu biografía/personalidad es: "${botUser.profileData?.bio || ''}"
+
+Aquí están los detalles del hilo:
+Autor: ${thread.author}
+Título: "${thread.title}"
+Contenido original: "${thread.content}"
+Respuestas previas:
+${(thread.replies || []).slice(-5).map(r => `- ${r.author}: ${r.content}`).join('\n')}
+
+Instrucciones:
+1. Escribe una respuesta corta y natural en español (1 a 3 oraciones como máximo).
+2. Adáptate estrictamente a tu personalidad (bio) y al tema del hilo.
+3. No saludes formalmente. Sé informal, directo y muy humano.
+4. Devuelve ÚNICAMENTE tu respuesta como texto plano, sin formato adicional y sin comillas.`;
+    const userPrompt = "Escribe tu respuesta al hilo.";
+    return generateAiText(systemPrompt, userPrompt, "Interesante tema, gracias por compartir.");
+}
+
 async function simulateBotActivity() {
     try {
         console.log("[BOT ENGINE] Iniciando ronda de simulación de actividad...");
@@ -1569,10 +1687,30 @@ async function simulateBotActivity() {
         const randomAction = Math.floor(Math.random() * 5); // 0 to 4
         
         if (randomAction === 0) {
-            const randomProd = botProductPool[Math.floor(Math.random() * botProductPool.length)];
             const isAuction = Math.random() > 0.5;
+            let productData = null;
             
-            const alreadyListed = db.products.some(p => p.title === randomProd.title && p.seller === botUser.username);
+            try {
+                // Call LLM to generate dynamic product
+                productData = await generateBotProduct(botUser);
+            } catch (err) {
+                console.error("[BOT ENGINE] Error generating AI product, using template:", err.message);
+            }
+            
+            // Fallback to static pool if LLM failed or parsed invalid
+            if (!productData) {
+                const randomProd = botProductPool[Math.floor(Math.random() * botProductPool.length)];
+                productData = {
+                    title: randomProd.title,
+                    desc: randomProd.desc,
+                    price: randomProd.price,
+                    category: isAuction ? 'Subastas' : 'Electronics',
+                    condition: randomProd.condition,
+                    icon: randomProd.icon
+                };
+            }
+
+            const alreadyListed = db.products.some(p => p.title === productData.title && p.seller === botUser.username);
             if (alreadyListed) return;
 
             let auctionEnd = null;
@@ -1580,17 +1718,20 @@ async function simulateBotActivity() {
                 auctionEnd = new Date(Date.now() + 5 * 60 * 1000).toISOString();
             }
 
+            // Map image dynamically based on keywords
+            const imageUrl = getRetroImageUrl(productData.title, productData.category);
+
             const newProduct = {
                 id: db.nextProductId++,
-                title: randomProd.title,
-                description: randomProd.desc,
-                price: randomProd.price,
+                title: productData.title,
+                description: productData.desc,
+                price: productData.price,
                 seller: botUser.username,
-                category: isAuction ? 'Subastas' : 'Electronics',
-                condition: randomProd.condition,
-                icon: randomProd.icon,
+                category: isAuction ? 'Subastas' : (productData.category || 'Electronics'),
+                condition: productData.condition || 'Usado - Buen Estado',
+                icon: productData.icon || '📦',
                 location: botUser.profileData.location,
-                image: null,
+                image: imageUrl,
                 isAuction: isAuction,
                 auctionEnd: auctionEnd,
                 auctionFinalized: false,
@@ -1600,7 +1741,7 @@ async function simulateBotActivity() {
 
             db.products.push(newProduct);
             saveDb();
-            console.log(`[BOT ENGINE] El bot ${botUser.username} publicó un producto: ${newProduct.title} (${isAuction ? 'Subasta' : 'Venta directa'})`);
+            console.log(`[BOT ENGINE] El bot ${botUser.username} publicó un producto dinámico: ${newProduct.title} en categoría "${newProduct.category}" (${isAuction ? 'Subasta' : 'Venta directa'})`);
             
         } else if (randomAction === 1) {
             const activeAuctions = db.products.filter(p => p.isAuction && !p.auctionFinalized && p.seller !== botUser.username && p.highestBidder !== botUser.username && (p.auctionEnd && new Date(p.auctionEnd) > new Date()));
@@ -1651,29 +1792,55 @@ async function simulateBotActivity() {
             db.threads = db.threads || [];
             
             if (writeNewThread || db.threads.length === 0) {
-                const template = botForumThreads[Math.floor(Math.random() * botForumThreads.length)];
+                let threadData = null;
+                try {
+                    threadData = await generateBotForumThread(botUser);
+                } catch (err) {
+                    console.error("[BOT ENGINE] Error generating AI forum thread:", err.message);
+                }
                 
-                const alreadyExists = db.threads.some(t => t.title === template.title);
+                if (!threadData) {
+                    const template = botForumThreads[Math.floor(Math.random() * botForumThreads.length)];
+                    threadData = {
+                        category: template.category,
+                        title: template.title,
+                        content: template.content
+                    };
+                }
+                
+                const alreadyExists = db.threads.some(t => t.title === threadData.title);
                 if (alreadyExists) return;
 
                 const newThread = {
                     id: db.nextThreadId++,
-                    category: template.category,
-                    title: template.title,
+                    category: threadData.category || 'security',
+                    title: threadData.title,
                     author: botUser.username,
-                    content: template.content,
+                    content: threadData.content,
                     replies: [],
                     timestamp: new Date().toISOString()
                 };
                 db.threads.push(newThread);
                 saveDb();
-                console.log(`[BOT ENGINE] El bot ${botUser.username} creó un nuevo hilo en el foro: "${newThread.title}"`);
+                console.log(`[BOT ENGINE] El bot ${botUser.username} creó un nuevo hilo dinámico en el foro: "${newThread.title}"`);
             } else {
                 const targetThread = db.threads[Math.floor(Math.random() * db.threads.length)];
-                const replyPool = botForumReplies.find(r => r.category === targetThread.category);
-                if (!replyPool) return;
-
-                const replyContent = replyPool.replies[Math.floor(Math.random() * replyPool.replies.length)];
+                let replyContent = null;
+                
+                try {
+                    replyContent = await generateBotForumReply(botUser, targetThread);
+                } catch (err) {
+                    console.error("[BOT ENGINE] Error generating AI forum reply:", err.message);
+                }
+                
+                if (!replyContent) {
+                    const replyPool = botForumReplies.find(r => r.category === targetThread.category);
+                    if (replyPool) {
+                        replyContent = replyPool.replies[Math.floor(Math.random() * replyPool.replies.length)];
+                    } else {
+                        replyContent = "Interesante tema, gracias por compartir.";
+                    }
+                }
                 
                 const newReply = {
                     author: botUser.username,
@@ -1683,7 +1850,7 @@ async function simulateBotActivity() {
                 targetThread.replies = targetThread.replies || [];
                 targetThread.replies.push(newReply);
                 saveDb();
-                console.log(`[BOT ENGINE] El bot ${botUser.username} respondió en el hilo: "${targetThread.title}"`);
+                console.log(`[BOT ENGINE] El bot ${botUser.username} respondió dinámicamente en el hilo: "${targetThread.title}"`);
             }
 
         } else if (randomAction === 3) {
