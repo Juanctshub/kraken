@@ -33,7 +33,7 @@
         "bio": "Buscando hardware retro de los 90 y principios de los 2000. Pago rápido.",
         "avatar": "💾",
         "storeName": "Retro Silicon Depot",
-        "balance": 337
+        "balance": 355
       }
     },
     {
@@ -69,7 +69,7 @@
         "bio": "Buscando piezas raras para mi terminal retro. Solo cifrado PGP de alta seguridad.",
         "avatar": "🦾",
         "storeName": "Cyberpunk RetroParts",
-        "balance": 220
+        "balance": 200
       }
     },
     {
@@ -105,7 +105,7 @@
         "bio": "Vendedor de seguridad y enrutadores cebolla. Compra segura 100% garantizada por depósito.",
         "avatar": "🧅",
         "storeName": "The Onion Secure Shop",
-        "balance": 0
+        "balance": 100
       }
     },
     {
@@ -802,6 +802,59 @@
       "auctionFinalized": false,
       "highestBidder": "coaxial_expert",
       "timestamp": "2026-06-12T02:18:22.710Z"
+    },
+    {
+      "id": 34,
+      "title": "Tarjeta de Red ISA Coaxial NE2000",
+      "description": "Tarjeta de red clásica de 10Mbps. Conector BNC coaxial. Probada y funcional.",
+      "price": 20,
+      "seller": "soundblaster_guy",
+      "category": "Electronics",
+      "condition": "Usado - Aceptable",
+      "icon": "🔌",
+      "location": "París, Francia",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:27:24.255Z",
+      "sold": true
+    },
+    {
+      "id": 35,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "retro_collector",
+      "category": "Electronics",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "Tokio, Japón",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:29:54.307Z",
+      "sold": true
+    },
+    {
+      "id": 36,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "irc_op",
+      "category": "Electronics",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:31:34.338Z"
     }
   ],
   "orders": [
@@ -1103,10 +1156,10 @@
       "coin": "USDT",
       "escrowMode": "multisig",
       "moderator": "ArbiterNode_Kraken",
-      "status": "funded",
+      "status": "completed",
       "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
-      "trackingNumber": null,
-      "reviewed": false,
+      "trackingNumber": "USPS-BOT-263563661",
+      "reviewed": true,
       "timestamp": "2026-06-12T02:12:10.496Z"
     },
     {
@@ -1151,9 +1204,9 @@
       "coin": "USDT",
       "escrowMode": "multisig",
       "moderator": "ArbiterNode_Kraken",
-      "status": "funded",
+      "status": "shipped",
       "shippingAddress": "Dirección registrada en perfil de subasta",
-      "trackingNumber": null,
+      "trackingNumber": "USPS-BOT-168884262",
       "reviewed": false,
       "timestamp": "2026-06-12T02:18:36.474Z"
     },
@@ -1236,6 +1289,38 @@
       "trackingNumber": null,
       "reviewed": false,
       "timestamp": "2026-06-12T02:20:27.045Z"
+    },
+    {
+      "id": "ORD-100028",
+      "productId": 34,
+      "productTitle": "Tarjeta de Red ISA Coaxial NE2000",
+      "price": 20,
+      "buyer": "cyber_punk",
+      "seller": "soundblaster_guy",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:27:49.265Z"
+    },
+    {
+      "id": "ORD-100029",
+      "productId": 35,
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "price": 75,
+      "buyer": "onion_dealer",
+      "seller": "retro_collector",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:30:44.326Z"
     }
   ],
   "chats": [
@@ -1436,6 +1521,15 @@
       "productTitle": "IBM Model M",
       "productId": 1,
       "timestamp": "2026-06-12T02:25:05.279Z"
+    },
+    {
+      "id": 23,
+      "from": "retro_collector",
+      "to": "retro_collector",
+      "text": "[retro_collector -> retro_collector] (9:42:36 p. m.): ¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias! :-D",
+      "productTitle": "Auriculares Retro tipo diadema Y2K",
+      "productId": 12,
+      "timestamp": "2026-06-12T02:26:09.880Z"
     }
   ],
   "transactions": [
@@ -2086,6 +2180,42 @@
       "usdValue": 29,
       "txHash": "0xdd1760bbdfe8e0367e890a6d877a21bfbcf3200b",
       "timestamp": "2026-06-12T02:22:57.089Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0x1e68ad487348eafda05e8a0cae78aea1c49f9618",
+      "timestamp": "2026-06-12T02:26:09.228Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 20,
+      "usdValue": 20,
+      "txHash": "0x4ed95c8fb4808f73bdd2bddc6eeb9b1cf853f996",
+      "timestamp": "2026-06-12T02:27:49.265Z"
+    },
+    {
+      "username": "onion_dealer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 175,
+      "usdValue": 175,
+      "txHash": "0xc027b2aa9852f1b44d32f5c229ca86fd3d211f6e",
+      "timestamp": "2026-06-12T02:30:44.326Z"
+    },
+    {
+      "username": "onion_dealer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0x3432c764f8d7c23bd0e6c203a7a6c3434b13ce93",
+      "timestamp": "2026-06-12T02:30:44.326Z"
     }
   ],
   "reviews": [
@@ -2214,10 +2344,19 @@
       "fromUser": "pgp_pioneer",
       "toUser": "irc_op",
       "timestamp": "2026-06-12T02:22:32.519Z"
+    },
+    {
+      "id": 15,
+      "orderId": "ORD-100019",
+      "rating": 5,
+      "comment": "¡Genial compra! Recibí el auricular en perfectas condiciones, justo como se veía en la foto. ¡Muy agradecido! 5 estrellas sin duda.",
+      "fromUser": "retro_collector",
+      "toUser": "retro_collector",
+      "timestamp": "2026-06-12T02:26:09.645Z"
     }
   ],
-  "nextProductId": 34,
-  "nextOrderId": 28,
+  "nextProductId": 37,
+  "nextOrderId": 30,
   "threads": [
     {
       "id": 1,
@@ -2240,6 +2379,11 @@
           "author": "pgp_guru",
           "content": "Gracias por avisar. Lo añadiré a mi lista negra local.",
           "timestamp": "2026-06-12T01:46:25.935Z"
+        },
+        {
+          "author": "pgp_guru",
+          "content": "Gracias por avisar. Lo añadiré a mi lista negra local.",
+          "timestamp": "2026-06-12T02:29:29.307Z"
         }
       ],
       "timestamp": "2026-06-06T02:56:46.259Z"
@@ -2260,6 +2404,11 @@
           "author": "voodoo_master",
           "content": "Yo uso llaves PGP de 2048 bits para mis chats en MSN y firmar mis transacciones, me parece el equilibrio perfecto.",
           "timestamp": "2026-06-12T01:51:47.628Z"
+        },
+        {
+          "author": "dialup_surfer",
+          "content": "Totalmente recomendado migrar a 4096. RSA 1024 ya es vulnerable a ataques de fuerza bruta por supercomputadores.",
+          "timestamp": "2026-06-12T02:26:59.239Z"
         }
       ],
       "timestamp": "2026-06-10T23:18:16.283Z"
@@ -2305,6 +2454,11 @@
           "author": "pgp_pioneer",
           "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
           "timestamp": "2026-06-12T02:10:30.472Z"
+        },
+        {
+          "author": "netscape_surfer",
+          "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
+          "timestamp": "2026-06-12T02:29:04.293Z"
         }
       ],
       "timestamp": "2026-06-10T23:18:56.288Z"

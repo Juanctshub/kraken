@@ -34,13 +34,18 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // =========================================================================
-// FILE-BASED PERSISTENT DATABASE SETUP (SQLite Alternative)
+// MONGO DB CLIENT & SERVERLESS DATABASE SETUP
 // =========================================================================
-const dbPath = path.join(__dirname, 'db.json');
+const { MongoClient } = require('mongodb');
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017";
+const client = new MongoClient(mongoUri);
+let dbCollection = null;
+let savePromise = null;
+let connPromise = null;
 
 const defaultDb = {
     users: [],
-    products: [], // starts empty
+    products: [], 
     orders: [],
     chats: [],
     transactions: [],
@@ -53,54 +58,92 @@ const defaultDb = {
 
 let db = { ...defaultDb };
 
-// Load DB
-function loadDb() {
-    try {
-        if (fs.existsSync(dbPath)) {
-            const data = fs.readFileSync(dbPath, 'utf8');
-            db = JSON.parse(data);
-            // Ensure all tables exist
-            db.users = db.users || [];
-            db.products = db.products || [];
-            db.orders = db.orders || [];
-            db.chats = db.chats || [];
-            db.transactions = db.transactions || [];
-            db.reviews = db.reviews || [];
-            db.threads = db.threads || [];
-            db.nextProductId = db.nextProductId || 1;
-            db.nextOrderId = db.nextOrderId || 1;
-            db.nextThreadId = db.nextThreadId || 1;
-            console.log("Base de datos cargada correctamente desde db.json");
-        } else {
-            saveDb();
-            console.log("db.json creado por primera vez.");
-        }
-    } catch (err) {
-        console.error("Error al cargar la base de datos:", err);
+async function connectToMongo() {
+    if (!connPromise) {
+        connPromise = client.connect().then(async () => {
+            const mongoDb = client.db('kraken');
+            dbCollection = mongoDb.collection('state');
+            console.log("[MONGODB] Conectado exitosamente.");
+            
+            // Check if seed database exists, otherwise create it
+            const doc = await dbCollection.findOne({ _id: 'state' });
+            if (doc) {
+                db = doc.data;
+                console.log("[MONGODB] Estado cargado desde base de datos remota.");
+            } else {
+                // Seed from local db.json
+                const localDbPath = path.join(__dirname, 'db.json');
+                if (fs.existsSync(localDbPath)) {
+                    const fileData = fs.readFileSync(localDbPath, 'utf8');
+                    db = JSON.parse(fileData);
+                    console.log("[MONGODB] Sembrando base de datos desde db.json local.");
+                } else {
+                    db = { ...defaultDb };
+                    console.log("[MONGODB] Inicializando base de datos vacía.");
+                }
+                
+                // Save initial state
+                await dbCollection.replaceOne({ _id: 'state' }, { _id: 'state', data: db }, { upsert: true });
+            }
+            
+            // Run registerBotsIfNotExist safely after load
+            registerBotsIfNotExist();
+        }).catch(err => {
+            console.error("[MONGODB] Error de conexión:", err.message);
+            connPromise = null;
+        });
     }
+    return connPromise;
 }
+
+// Database connection and state synchronizer middleware
+app.use(async (req, res, next) => {
+    // 1. Ensure connection is active
+    await connectToMongo();
+    
+    // 2. Fetch latest state from MongoDB on every request to prevent stale container caches
+    if (dbCollection) {
+        try {
+            const doc = await dbCollection.findOne({ _id: 'state' });
+            if (doc) {
+                db = doc.data;
+            }
+        } catch (err) {
+            console.error("[MONGODB] Error actualizando estado:", err.message);
+        }
+    }
+    
+    // 3. Intercept res.send and res.json to block and await any pending writes to MongoDB
+    const originalSend = res.send;
+    res.send = async function (body) {
+        if (savePromise) {
+            await savePromise;
+        }
+        return originalSend.call(this, body);
+    };
+    
+    const originalJson = res.json;
+    res.json = async function (body) {
+        if (savePromise) {
+            await savePromise;
+        }
+        return originalJson.call(this, body);
+    };
+    
+    next();
+});
 
 // Save DB
 function saveDb() {
-    try {
-        const dir = path.dirname(dbPath);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir, { recursive: true });
-        }
-        const tempPath = dbPath + '.tmp';
-        fs.writeFileSync(tempPath, JSON.stringify(db, null, 2), 'utf8');
-        fs.renameSync(tempPath, dbPath);
-    } catch (err) {
-        console.error("Error al guardar la base de datos de forma atómica:", err.message);
-        try {
-            fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
-        } catch (fallbackErr) {
-            console.error("Error crítico al guardar la base de datos (fallback):", fallbackErr.message);
-        }
+    if (!dbCollection) {
+        console.warn("[MONGODB] No conectado. Ignorando guardado.");
+        return;
     }
+    const saveOp = dbCollection.replaceOne({ _id: 'state' }, { _id: 'state', data: db }, { upsert: true });
+    savePromise = Promise.all([savePromise, saveOp])
+        .then(() => { if (savePromise === saveOp) savePromise = null; })
+        .catch(err => { console.error("[MONGODB] Error al guardar:", err.message); });
 }
-
-loadDb();
 
 // =========================================================================
 // AUTHENTICATION API
@@ -1772,23 +1815,41 @@ async function simulateBotActivity() {
     }
 }
 
-// Start Bot Engine
-registerBotsIfNotExist();
-setTimeout(simulateBotActivity, 5000);
-setInterval(simulateBotActivity, 25000);
-
 // =========================================================================
-// PRODUCTION BUILD HOOK
+// BOT SIMULATION ENDPOINT (Vercel Cron Trigger)
 // =========================================================================
 
-// Serve static assets from compilation folder
-app.use(express.static(path.join(__dirname, '../client/dist')));
-
-// SPA Wildcard fallback
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+// GET and POST endpoint to run the bot simulation round
+app.all('/api/bots/simulate', async (req, res) => {
+    try {
+        console.log("[BOT ENGINE] Invocando ronda de simulación de bots via API...");
+        await simulateBotActivity();
+        res.json({ success: true, message: "Simulación de bots ejecutada con éxito." });
+    } catch (err) {
+        console.error("[BOT ENGINE] Error al ejecutar simulación via API:", err);
+        res.status(500).json({ success: false, error: err.message });
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+// Start Bot Engine & Server local hooks
+if (!process.env.VERCEL) {
+    // Local mode: connect to Mongo and run local intervals
+    connectToMongo().then(() => {
+        setTimeout(simulateBotActivity, 5000);
+        setInterval(simulateBotActivity, 25000);
+    });
+
+    // Serve static assets from compilation folder locally
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    // SPA Wildcard fallback locally
+    app.use((req, res) => {
+        res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+    });
+
+    app.listen(PORT, () => {
+        console.log(`Servidor corriendo en el puerto ${PORT}`);
+    });
+}
+
+module.exports = app;
