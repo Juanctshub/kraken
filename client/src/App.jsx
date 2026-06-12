@@ -482,6 +482,25 @@ function App() {
     }
   };
 
+  const deleteChat = async (otherUsername) => {
+    if (!user || !user.username) return;
+    if (!window.confirm(`¿Estás seguro de que deseas borrar la conversación con ${otherUsername}?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/chats/${user.username}/${otherUsername}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        await fetchChats();
+        setActiveChatId(null);
+      } else {
+        alert("Error al borrar el chat.");
+      }
+    } catch (err) {
+      console.error("Error deleting conversation:", err);
+      alert("Error de conexión al borrar el chat.");
+    }
+  };
+
   // Render components
   const renderActiveView = () => {
     if (!user || !user.username || !user.profileData) {
@@ -533,6 +552,7 @@ function App() {
               setTimeout(() => setIsAppShaking(false), 800);
             }}
             playMsnNudgeSound={playMsnNudgeSound}
+            onDeleteChat={deleteChat}
           />
         );
       case 'profile':
@@ -554,6 +574,17 @@ function App() {
             user={user}
             API_BASE={API_BASE}
             onOrderUpdated={fetchOrders}
+            filterRole="buyer"
+          />
+        );
+      case 'sales_escrow':
+        return (
+          <EscrowOrders
+            orders={orders}
+            user={user}
+            API_BASE={API_BASE}
+            onOrderUpdated={fetchOrders}
+            filterRole="seller"
           />
         );
       case 'store':

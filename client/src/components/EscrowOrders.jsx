@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import { Truck, Clock, CheckCircle2, ShieldAlert, Star } from 'lucide-react';
 
-export default function EscrowOrders({ orders, user, API_BASE, onOrderUpdated }) {
+export default function EscrowOrders({ orders, user, API_BASE, onOrderUpdated, filterRole }) {
+  const filteredOrders = (orders || []).filter(order => {
+    if (filterRole === 'buyer') {
+      return user && user.username && order.buyer && order.buyer.toLowerCase() === user.username.toLowerCase();
+    }
+    if (filterRole === 'seller') {
+      return user && user.username && order.seller && order.seller.toLowerCase() === user.username.toLowerCase();
+    }
+    return true;
+  });
   // Reviews state
   const [reviewingOrderId, setReviewingOrderId] = useState(null);
   const [reviewRating, setReviewRating] = useState(5);
@@ -46,7 +55,7 @@ export default function EscrowOrders({ orders, user, API_BASE, onOrderUpdated })
 
   const handleReleaseFunds = async (orderId, price, seller) => {
     try {
-      // 1. Mark order as completed on backend
+      // 1. Mark order as completed on backend (which handles balance transfer and 5% tax deduction)
       const orderRes = await fetch(`${API_BASE}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -54,21 +63,7 @@ export default function EscrowOrders({ orders, user, API_BASE, onOrderUpdated })
       });
       if (!orderRes.ok) throw new Error("Could not update order status.");
 
-      // 2. Add balance to the seller on backend
-      const sellerProfileRes = await fetch(`${API_BASE}/auth/profile/${seller}`);
-      if (!sellerProfileRes.ok) throw new Error("Could not fetch seller profile.");
-      const sellerProfile = await sellerProfileRes.json();
-      
-      const newSellerBalance = sellerProfile.balance + parseFloat(price);
-      
-      const updateBalanceRes = await fetch(`${API_BASE}/auth/profile/${seller}/balance`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ balance: newSellerBalance })
-      });
-      if (!updateBalanceRes.ok) throw new Error("Could not release funds to seller.");
-
-      alert("¡Firma digital verificada! Fondos liberados del depósito en garantía y transferidos al vendedor.");
+      alert("¡Firma digital verificada! Fondos liberados del depósito en garantía (menos 5% de impuesto del bazaar) y transferidos al vendedor.");
       onOrderUpdated();
     } catch (err) {
       alert("Error al liberar fondos en el servidor: " + err.message);
@@ -191,14 +186,14 @@ ${btoa(order.timestamp).slice(0, 40)}
           <span>cgi-bin/escrow_ledger.cgi - Lista de Pedidos del Vendedor / Comprador</span>
         </div>
 
-        {orders.length === 0 ? (
+        {filteredOrders.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '30px', color: '#666' }}>
             <Clock size={20} style={{ display: 'inline', marginRight: '6px', verticalAlign: 'middle' }} />
             No se encontraron pedidos de compra ni venta registrados para este usuario en el servidor.
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            {orders.map((order) => {
+            {filteredOrders.map((order) => {
               const isBuyer = user && user.username && order.buyer && order.buyer.toLowerCase() === user.username.toLowerCase();
               const isSeller = user && user.username && order.seller && order.seller.toLowerCase() === user.username.toLowerCase();
               

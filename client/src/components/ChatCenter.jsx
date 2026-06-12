@@ -8,7 +8,8 @@ export default function ChatCenter({
   sendMessage, 
   user,
   onLocalNudge,
-  playMsnNudgeSound
+  playMsnNudgeSound,
+  onDeleteChat
 }) {
   const [inputText, setInputText] = useState('');
   const messagesBoxRef = useRef(null);
@@ -100,8 +101,26 @@ export default function ChatCenter({
         <div className="msn-window">
           
           {/* Header Classic blue */}
-          <div className="msn-header">
+          <div className="msn-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span>Conversación con {activeConversation.sellerAlias}</span>
+            {onDeleteChat && (
+              <button 
+                onClick={() => onDeleteChat(activeConversation.sellerAlias)}
+                style={{
+                  backgroundColor: '#d32f2f',
+                  color: '#fff',
+                  border: 'none',
+                  padding: '2px 8px',
+                  fontSize: '10px',
+                  cursor: 'pointer',
+                  fontFamily: '"MS Sans Serif", Geneva, sans-serif',
+                  boxShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  marginRight: '6px'
+                }}
+              >
+                Borrar Chat
+              </button>
+            )}
           </div>
 
           {/* Messages Feed */}

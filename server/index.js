@@ -410,9 +410,36 @@ app.put('/api/orders/:id/status', (req, res) => {
     const order = db.orders.find(o => o.id === id);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
+    const oldStatus = order.status;
     if (status) order.status = status;
     if (trackingNumber) order.trackingNumber = trackingNumber;
     if (reviewed !== undefined) order.reviewed = reviewed;
+
+    // If order transitions to completed, release funds to seller (minus 5% tax/fee)
+    if (oldStatus !== 'completed' && order.status === 'completed') {
+        const sellerUser = db.users.find(u => u.username.toLowerCase() === order.seller.toLowerCase());
+        if (sellerUser) {
+            const feeRate = 0.05; // 5% marketplace commission
+            const priceVal = parseFloat(order.price);
+            const feeVal = priceVal * feeRate;
+            const netAmount = priceVal - feeVal;
+
+            sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
+
+            // Log deposit transaction for seller
+            db.transactions.push({
+                username: order.seller,
+                type: 'deposit',
+                coin: order.coin,
+                amount: netAmount,
+                usdValue: netAmount,
+                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                timestamp: new Date().toISOString()
+            });
+
+            console.log(`[ORDER] Funds released via manual update for order ${order.id}. Price: ${priceVal}, Fee: ${feeVal}, Net: ${netAmount}. Seller: ${order.seller}`);
+        }
+    }
 
     saveDb();
     res.json(order);
@@ -450,10 +477,15 @@ app.put('/api/orders/:id/dispute-resolve', (req, res) => {
             timestamp: new Date().toISOString()
         });
     } else if (action === 'release') {
-        // Release funds to Seller
+        // Release funds to Seller (minus 5% tax/fee)
         const sellerUser = db.users.find(u => u.username.toLowerCase() === order.seller.toLowerCase());
+        const feeRate = 0.05; // 5% marketplace commission
+        const priceVal = parseFloat(order.price);
+        const feeVal = priceVal * feeRate;
+        const netAmount = priceVal - feeVal;
+
         if (sellerUser) {
-            sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + parseFloat(order.price);
+            sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
         }
         order.status = 'completed';
 
@@ -462,8 +494,8 @@ app.put('/api/orders/:id/dispute-resolve', (req, res) => {
             username: order.seller,
             type: 'deposit',
             coin: order.coin,
-            amount: order.price,
-            usdValue: order.price,
+            amount: netAmount,
+            usdValue: netAmount,
             txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
             timestamp: new Date().toISOString()
         });
@@ -576,6 +608,19 @@ app.get('/api/chats/:username', (req, res) => {
         c.to.toLowerCase() === username.toLowerCase()
     );
     res.json(userChats);
+});
+
+// Delete a conversation between two users
+app.delete('/api/chats/:username/:otherUsername', (req, res) => {
+    const { username, otherUsername } = req.params;
+    db.chats = db.chats.filter(c => 
+        !(
+            (c.from && c.from.toLowerCase() === username.toLowerCase() && c.to && c.to.toLowerCase() === otherUsername.toLowerCase()) ||
+            (c.from && c.from.toLowerCase() === otherUsername.toLowerCase() && c.to && c.to.toLowerCase() === username.toLowerCase())
+        )
+    );
+    saveDb();
+    res.json({ message: "Conversation deleted successfully." });
 });
 
 // =========================================================================
@@ -1479,7 +1524,7 @@ function ensureDbConsistency() {
         if (!p.sold && !p.isAuction) {
             // Check if there is an order for this product ID
             const hasFundedOrCompletedOrder = db.orders.some(o => 
-                o.productId === p.id && 
+                String(o.productId) === String(p.id) && 
                 (o.status === 'funded' || o.status === 'shipped' || o.status === 'completed')
             );
             if (hasFundedOrCompletedOrder) {
@@ -1522,6 +1567,19 @@ async function simulateBotActivity() {
         if (registeredBots.length === 0) return;
         const botUser = registeredBots[Math.floor(Math.random() * registeredBots.length)];
 
+        // 0. Auto-advance orders where a human seller has a funded order from a bot buyer:
+        const fundedOrdersWithBotBuyerAndHumanSeller = db.orders.filter(o => 
+            o.status === 'funded' && 
+            botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase()) &&
+            !botsList.some(b => b.username.toLowerCase() === o.seller.toLowerCase())
+        );
+        for (const order of fundedOrdersWithBotBuyerAndHumanSeller) {
+            order.status = 'shipped';
+            order.trackingNumber = 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000);
+            saveDb();
+            console.log(`[BOT ENGINE] Envío automático registrado para el pedido del human: ${order.id}`);
+        }
+
         // 1. ALWAYS auto-advance any orders that are in 'shipped' state where the buyer is a bot:
         const shippedOrdersWithBotBuyer = db.orders.filter(o => 
             o.status === 'shipped' && 
@@ -1530,16 +1588,21 @@ async function simulateBotActivity() {
         for (const targetOrder of shippedOrdersWithBotBuyer) {
             targetOrder.status = 'completed';
             
-            // Release funds to seller
+            // Release funds to seller (minus 5% tax/fee)
             const sellerUser = db.users.find(u => u.username.toLowerCase() === targetOrder.seller.toLowerCase());
             if (sellerUser) {
-                sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + parseFloat(targetOrder.price);
+                const feeRate = 0.05; // 5% marketplace commission
+                const priceVal = parseFloat(targetOrder.price);
+                const feeVal = priceVal * feeRate;
+                const netAmount = priceVal - feeVal;
+
+                sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
                 db.transactions.push({
                     username: sellerUser.username,
                     type: 'deposit',
                     coin: targetOrder.coin,
-                    amount: targetOrder.price,
-                    usdValue: targetOrder.price,
+                    amount: netAmount,
+                    usdValue: netAmount,
                     txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
                     timestamp: new Date().toISOString()
                 });
@@ -1964,13 +2027,18 @@ async function simulateBotActivity() {
                 
                 const sellerUser = db.users.find(u => u.username.toLowerCase() === targetOrder.seller.toLowerCase());
                 if (sellerUser) {
-                    sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + parseFloat(targetOrder.price);
+                    const feeRate = 0.05; // 5% marketplace commission
+                    const priceVal = parseFloat(targetOrder.price);
+                    const feeVal = priceVal * feeRate;
+                    const netAmount = priceVal - feeVal;
+
+                    sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
                     db.transactions.push({
                         username: sellerUser.username,
                         type: 'deposit',
                         coin: targetOrder.coin,
-                        amount: targetOrder.price,
-                        usdValue: targetOrder.price,
+                        amount: netAmount,
+                        usdValue: netAmount,
                         txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
                         timestamp: new Date().toISOString()
                     });
