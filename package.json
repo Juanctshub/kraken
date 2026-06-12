@@ -1,0 +1,11 @@
+{
+  "name": "kraken-marketplace-root",
+  "version": "1.0.0",
+  "description": "Root package runner for Kraken Retro Marketplace",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

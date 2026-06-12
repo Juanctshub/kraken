@@ -1,0 +1,660 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+New:wght@400;700&family=Tahoma:wght@400;700&display=swap');
+
+:root {
+  /* 2000s Classic E-Commerce Palette (Mercado Libre Yellow & eBay Classic blue/grey) */
+  --ml-yellow: #fff159;
+  --bg-page: #ebebeb;
+  --bg-wrapper: #ffffff;
+  --bg-panel: #f7f7f7;
+  
+  --border-grey: #cccccc;
+  --border-dark: #808080;
+  
+  --text-color: #333333;
+  --link-color: #0000cc;
+  --link-color-hover: #ff6600;
+  --price-color: #b12704;
+  --success-color: #00a650;
+  --accent-blue: #3483fa;
+
+  --font-sans: 'Tahoma', Arial, Helvetica, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 10px 0;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+a:hover {
+  color: var(--link-color-hover);
+}
+
+/* Page container wrapper */
+.forum-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: var(--bg-wrapper);
+  border: 1px solid #999999;
+  padding: 0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Yellow Header Navigation Banner (Y2K style) */
+.forum-banner {
+  background-color: var(--ml-yellow);
+  border-bottom: 2px solid var(--border-dark);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forum-banner-logo {
+  font-family: 'Impact', sans-serif;
+  font-size: 32px;
+  letter-spacing: -1px;
+  color: #032b80;
+  text-shadow: 1px 1px 0px #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.forum-banner-subtitle {
+  font-size: 11px;
+  color: #666;
+  font-style: italic;
+}
+
+/* User Quick Bar & Dial-Up Bar */
+.dialup-indicator {
+  background-color: #f6f6f6;
+  border-bottom: 1px solid var(--border-grey);
+  padding: 8px 20px;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #555;
+}
+
+/* Top Nav menu (ebay style tabs) */
+.forum-navbar {
+  background-color: #f1f1f1;
+  border-bottom: 1px solid var(--border-grey);
+  display: flex;
+  padding: 0 10px;
+}
+
+.forum-nav-btn {
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border-grey);
+  color: #333;
+  padding: 10px 16px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.forum-nav-btn:hover {
+  background-color: #e5e5e5;
+  color: #000;
+}
+
+.forum-nav-btn.active {
+  background-color: var(--bg-wrapper);
+  border-bottom: 2px solid var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* Main workspace margin */
+main {
+  padding: 20px;
+}
+
+/* Tables & Grid layouts (2000s style) */
+.forum-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-grey);
+}
+
+.forum-table th {
+  background-color: #f1f1f1;
+  border-bottom: 2px solid var(--border-grey);
+  color: #333;
+  font-weight: bold;
+  padding: 8px;
+  text-align: left;
+  font-size: 11px;
+}
+
+.forum-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eeeeee;
+  vertical-align: top;
+}
+
+.forum-table tr:nth-child(even) td {
+  background-color: #fafafa;
+}
+
+.forum-table tr:hover td {
+  background-color: #f6f8fa;
+}
+
+/* Boards categories & search */
+.board-icon {
+  font-size: 18px;
+}
+
+.board-title {
+  font-weight: bold;
+  color: var(--link-color);
+  font-size: 12px;
+}
+
+.board-desc {
+  font-size: 11px;
+  color: #666;
+  margin-top: 1px;
+}
+
+/* Forms & inputs (3D beveled look) */
+.cgi-form-box {
+  background-color: var(--bg-panel);
+  border: 1px solid #999999;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.cgi-header {
+  border-bottom: 2px solid #000080;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+  font-weight: bold;
+  color: #000080;
+  font-size: 13px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 11px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #7f9db9;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  outline: none;
+  background-color: #ffffff;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent-blue);
+  background-color: #ffffe0; /* yellow tint on focus Y2K style */
+}
+
+/* Buttons Y2K Style */
+.cgi-btn {
+  background-color: #e1e1e1;
+  border: 1px solid #707070;
+  color: #000000;
+  padding: 6px 16px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.cgi-btn:hover {
+  background-color: #e5e5e5;
+  border-color: #000000;
+}
+
+.cgi-btn:active {
+  background-color: #cccccc;
+}
+
+.cgi-btn-primary {
+  background-color: #000080;
+  border-color: #000050;
+  color: #ffffff;
+}
+
+.cgi-btn-primary:hover {
+  background-color: #0000b3;
+  color: #ffffff;
+}
+
+.cgi-btn:disabled {
+  background-color: #cccccc;
+  border-color: #999999;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* Distorted CAPTCHA Styling */
+.captcha-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.captcha-canvas {
+  border: 1px solid #808080;
+  background-color: #f0f0f0;
+}
+
+/* MSN Messenger Client (Y2K Light Palette) */
+.msn-messenger {
+  border: 1px solid #8ab2e6;
+  background-color: #f2f7fc;
+  color: #000000;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 480px;
+  font-family: var(--font-sans);
+}
+
+.msn-sidebar {
+  background-color: #e1edf9;
+  border-right: 1px solid #8ab2e6;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.msn-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #b7cde6;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.msn-avatar {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #8ab2e6;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.msn-friend-list {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.msn-friend-item {
+  padding: 6px 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.msn-friend-item:hover {
+  background-color: #c9ddf2;
+}
+
+.msn-friend-item.active {
+  background-color: #2b79c2;
+  color: #ffffff;
+}
+
+.msn-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid #555555;
+}
+
+.msn-status-online { background-color: #00cc00; }
+.msn-status-away { background-color: #ffcc00; }
+
+.msn-window {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  height: 100%;
+  overflow: hidden;
+}
+
+.msn-header {
+  background: linear-gradient(180deg, #b0ccef, #7ea9df);
+  color: #032b80;
+  padding: 6px 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #8ab2e6;
+}
+
+.msn-messages-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: #ffffff;
+}
+
+.msn-msg {
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.msn-msg-name {
+  font-weight: bold;
+}
+
+.msn-msg-user .msn-msg-name { color: #0000ee; }
+.msn-msg-seller .msn-msg-name { color: #cc6600; }
+
+.msn-msg-text {
+  margin-top: 1px;
+  padding-left: 6px;
+}
+
+.msn-input-area {
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  background-color: #e1edf9;
+  border-top: 1px solid #8ab2e6;
+}
+
+.msn-input-area textarea {
+  flex-grow: 1;
+  border: 1px solid #8ab2e6;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  padding: 4px;
+  resize: none;
+  height: 36px;
+  outline: none;
+}
+
+.msn-btn {
+  background-color: #7ea9df;
+  border: 1px solid #4a75a7;
+  color: #032b80;
+  font-weight: bold;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.msn-btn:hover {
+  background-color: #6597d3;
+}
+
+/* User CP Sidebar Layout */
+.user-cp-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+}
+
+.user-cp-menu {
+  border: 1px solid var(--border-grey);
+  background-color: #fbfbfb;
+  padding: 4px;
+}
+
+.user-cp-menu-header {
+  background-color: #f1f1f1;
+  padding: 6px 8px;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-grey);
+}
+
+.user-cp-menu-item {
+  display: block;
+  padding: 6px 8px;
+  color: var(--link-color);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.user-cp-menu-item:hover {
+  background-color: #eeeeee;
+  text-decoration: underline;
+}
+
+.user-cp-menu-item.active {
+  background-color: #e5e5e5;
+  font-weight: bold;
+  color: #000000;
+}
+
+/* Footer layout */
+.forum-footer {
+  text-align: center;
+  font-size: 10px;
+  color: #777777;
+  padding: 16px;
+  border-top: 1px solid var(--border-grey);
+  background-color: #f9f9f9;
+}
+
+.tag-badge {
+  font-size: 9px;
+  font-weight: bold;
+  padding: 1px 4px;
+  border: 1px solid;
+  text-transform: uppercase;
+}
+
+.tag-new {
+  background-color: #eef9f2;
+  color: var(--success-color);
+  border-color: #a8ebd0;
+}
+
+.tag-used {
+  background-color: #fff9f3;
+  color: var(--link-color-hover);
+  border-color: #ffd9bc;
+}
+
+.tag-refurbished {
+  background-color: #eef7fe;
+  color: var(--accent-blue);
+  border-color: #bfe3fc;
+}
+
+/* Product Detail Page eBay Style */
+.item-detail-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.item-image-box {
+  width: 100%;
+  height: 300px;
+  background-color: #fafafa;
+  border: 1px solid var(--border-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 120px;
+}
+
+.item-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item-title-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  border-bottom: 1.5px solid var(--border-grey);
+  padding-bottom: 10px;
+}
+
+.item-price-row {
+  background-color: #fdf6e2;
+  border: 1px solid #f5d3b3;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-price-lbl {
+  font-size: 11px;
+  color: #555;
+  font-weight: bold;
+}
+
+.item-price-val {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--price-color);
+}
+
+.item-meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.item-meta-table td {
+  padding: 6px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.item-meta-table td.lbl {
+  font-weight: bold;
+  color: #666;
+  width: 120px;
+}
+
+/* Modal and Overlays */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.cgi-step-indicator {
+  background-color: #ffffe0;
+  border: 1px dotted #cc9900;
+  padding: 6px;
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #775500;
+}
+
+/* Empty Marketplace info banner */
+.empty-marketplace-banner {
+  border: 1px solid #facc15;
+  background-color: #fef9c3;
+  color: #854d0e;
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.radar-map-canvas-container {
+  width: 100%;
+  height: 200px;
+  border: 1px solid var(--border-grey);
+  background-color: #07150a;
+}
+
+/* MSN Window Shake Animation */
+@keyframes msn-shake {
+  0% { transform: translate(2px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(0px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(2px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.msn-window-shake {
+  animation: msn-shake 0.4s ease-in-out;
+  animation-iteration-count: 2;
+}
+
+/* Print Invoice styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-invoice-area, .print-invoice-area * {
+    visibility: visible;
+  }
+  .print-invoice-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print, .no-print * {
+    visibility: hidden !important;
+    display: none !important;
+  }
+}

@@ -1,0 +1,2349 @@
+{
+  "users": [
+    {
+      "username": "agent67",
+      "password": "0271987AA",
+      "email": "agent67@gmail.com",
+      "profileData": {
+        "location": "Russia, Moscú",
+        "bio": "Kapreska!",
+        "avatar": "👤",
+        "storeName": "agent67's Swap Shop",
+        "balance": 47
+      }
+    },
+    {
+      "username": "matrix_hacker",
+      "password": "botpassword123",
+      "email": "matrix_hacker@kraken.onion",
+      "profileData": {
+        "location": "Zion Core",
+        "bio": "Verificando firmas PGP y descifrando bloques. Solo uso claves fuertes.",
+        "avatar": "😎",
+        "storeName": "Matrix Crypto Gear",
+        "balance": 171
+      }
+    },
+    {
+      "username": "retro_collector",
+      "password": "botpassword123",
+      "email": "retro_collector@kraken.onion",
+      "profileData": {
+        "location": "Tokio, Japón",
+        "bio": "Buscando hardware retro de los 90 y principios de los 2000. Pago rápido.",
+        "avatar": "💾",
+        "storeName": "Retro Silicon Depot",
+        "balance": 337
+      }
+    },
+    {
+      "username": "pgp_pioneer",
+      "password": "botpassword123",
+      "email": "pgp_pioneer@kraken.onion",
+      "profileData": {
+        "location": "Suiza",
+        "bio": "Arquitecto de privacidad. Promoviendo el uso de PGP para toda comunicación.",
+        "avatar": "🔒",
+        "storeName": "Pioneer Cryptography",
+        "balance": 157
+      }
+    },
+    {
+      "username": "dialup_surfer",
+      "password": "botpassword123",
+      "email": "dialup_surfer@kraken.onion",
+      "profileData": {
+        "location": "California, EE.UU.",
+        "bio": "Navegando a 56kbps. Colecciono manuales de Netscape y CDs de AOL.",
+        "avatar": "🏄",
+        "storeName": "Surfer Dial-up Outlet",
+        "balance": 100
+      }
+    },
+    {
+      "username": "cyber_punk",
+      "password": "botpassword123",
+      "email": "cyber_punk@kraken.onion",
+      "profileData": {
+        "location": "Neo-Tokyo",
+        "bio": "Buscando piezas raras para mi terminal retro. Solo cifrado PGP de alta seguridad.",
+        "avatar": "🦾",
+        "storeName": "Cyberpunk RetroParts",
+        "balance": 220
+      }
+    },
+    {
+      "username": "win98_expert",
+      "password": "botpassword123",
+      "email": "win98_expert@kraken.onion",
+      "profileData": {
+        "location": "Berlín, Alemania",
+        "bio": "Restaurando PCs retro de finales de los 90. Busco placas madre Socket 7 y tarjetas de red ISA.",
+        "avatar": "🖥️",
+        "storeName": "Win98 Silicon Lab",
+        "balance": 75
+      }
+    },
+    {
+      "username": "netscape_surfer",
+      "password": "botpassword123",
+      "email": "netscape_surfer@kraken.onion",
+      "profileData": {
+        "location": "Seattle, EE.UU.",
+        "bio": "Cargando el navegador Netscape Navigator... Añorando los días de la Web 1.0.",
+        "avatar": "🌐",
+        "storeName": "Surfer Web Directory",
+        "balance": 110
+      }
+    },
+    {
+      "username": "onion_dealer",
+      "password": "botpassword123",
+      "email": "onion_dealer@kraken.onion",
+      "profileData": {
+        "location": "Escondido en la Red",
+        "bio": "Vendedor de seguridad y enrutadores cebolla. Compra segura 100% garantizada por depósito.",
+        "avatar": "🧅",
+        "storeName": "The Onion Secure Shop",
+        "balance": 0
+      }
+    },
+    {
+      "username": "retro_gamer",
+      "password": "botpassword123",
+      "email": "retro_gamer@kraken.onion",
+      "profileData": {
+        "location": "Texas, EE.UU.",
+        "bio": "Jugador de Quake y Doom. Busco tarjetas de sonido Sound Blaster y GPUs Voodoo.",
+        "avatar": "🎮",
+        "storeName": "Classic Games & Hardware",
+        "balance": 75
+      }
+    },
+    {
+      "username": "pgp_guru",
+      "password": "botpassword123",
+      "email": "pgp_guru@kraken.onion",
+      "profileData": {
+        "location": "Helsinki, Finlandia",
+        "bio": "Cifrando el mundo un bloque a la vez. Verifico todas las claves y firmas.",
+        "avatar": "🔑",
+        "storeName": "Secure Cryptography Node",
+        "balance": 92
+      }
+    },
+    {
+      "username": "floppy_collector",
+      "password": "botpassword123",
+      "email": "floppy_collector@kraken.onion",
+      "profileData": {
+        "location": "Londres, Reino Unido",
+        "bio": "Colecciono disquetes de 3.5 y 5.25 pulgadas. Compro juegos retro en caja grande.",
+        "avatar": "💾",
+        "storeName": "Floppy Disk Depot",
+        "balance": 10
+      }
+    },
+    {
+      "username": "coaxial_expert",
+      "password": "botpassword123",
+      "email": "coaxial_expert@kraken.onion",
+      "profileData": {
+        "location": "París, Francia",
+        "bio": "Especialista en redes coaxiales del siglo pasado. Cableado y hubs ethernet antiguos.",
+        "avatar": "🔌",
+        "storeName": "Coaxial Network Supply",
+        "balance": 23
+      }
+    },
+    {
+      "username": "voodoo_master",
+      "password": "botpassword123",
+      "email": "voodoo_master@kraken.onion",
+      "profileData": {
+        "location": "Austin, Texas",
+        "bio": "¡Jugando Unreal Tournament en mi Voodoo 3! Busco tarjetas Voodoo 5 y placas base Slot 1.",
+        "avatar": "🎮",
+        "storeName": "Voodoo Hardware Lab",
+        "balance": 100
+      }
+    },
+    {
+      "username": "mp3_hoarder",
+      "password": "botpassword123",
+      "email": "mp3_hoarder@kraken.onion",
+      "profileData": {
+        "location": "Londres, Reino Unido",
+        "bio": "Coleccionando archivos MP3 de finales de los 90. Busco reproductores Rio y discos duros grandes.",
+        "avatar": "🎶",
+        "storeName": "Y2K Audio & Media",
+        "balance": 350
+      }
+    },
+    {
+      "username": "irc_op",
+      "password": "botpassword123",
+      "email": "irc_op@kraken.onion",
+      "profileData": {
+        "location": "Helsinki, Finlandia",
+        "bio": "Operador de IRC en Undernet. Siempre activo en el foro. Uso PGP para todas mis conversaciones.",
+        "avatar": "💬",
+        "storeName": "IRC Secure Hub",
+        "balance": 118
+      }
+    },
+    {
+      "username": "bios_flash",
+      "password": "botpassword123",
+      "email": "bios_flash@kraken.onion",
+      "profileData": {
+        "location": "Silicon Valley, EE.UU.",
+        "bio": "Programador de BIOS y restaurador de placas antiguas. Busco programadores EEPROM.",
+        "avatar": "🛠️",
+        "storeName": "EEPROM & BIOS Outlet",
+        "balance": 100
+      }
+    },
+    {
+      "username": "amiga_fanatic",
+      "password": "botpassword123",
+      "email": "amiga_fanatic@kraken.onion",
+      "profileData": {
+        "location": "Berlín, Alemania",
+        "bio": "Amante de Commodore Amiga. Busco aceleradoras, disquetes y manuales retro.",
+        "avatar": "🖥️",
+        "storeName": "Amiga Silicon Depot",
+        "balance": 120
+      }
+    },
+    {
+      "username": "soundblaster_guy",
+      "password": "botpassword123",
+      "email": "soundblaster_guy@kraken.onion",
+      "profileData": {
+        "location": "París, Francia",
+        "bio": "Coleccionista de tarjetas Sound Blaster 16 y AWE64. Compro sintetizadores MIDI.",
+        "avatar": "🎹",
+        "storeName": "SoundBlaster Guy Store",
+        "balance": 0
+      }
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "COCAINA 400g",
+      "description": "Welcome to the Hermanos Drogas Baazar\nBienvenido al Baazar de los Hermanos Drogas\n\nCocaina de Calidad ASEGURADA (desde el 80%) a partir de:\n\n5g - 30$\n400g - 1200$\n\nnegociaciones al PRIV",
+      "price": 1200,
+      "seller": "agent67",
+      "category": "Drogas",
+      "condition": "Reacondicionado",
+      "icon": "💿",
+      "location": "Madrid, España",
+      "image": "data:image/jpeg;base64,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",
+      "timestamp": "2026-06-06T02:42:42.448Z"
+    },
+    {
+      "id": 2,
+      "title": "Tarjeta de Red ISA Coaxial NE2000",
+      "description": "Tarjeta de red clásica de 10Mbps. Conector BNC coaxial. Probada y funcional.",
+      "price": 20,
+      "seller": "matrix_hacker",
+      "category": "Subastas",
+      "condition": "Usado - Aceptable",
+      "icon": "🔌",
+      "location": "Zion Core",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-10T23:24:41.290Z",
+      "auctionFinalized": true,
+      "highestBidder": "agent67",
+      "timestamp": "2026-06-10T23:19:41.290Z"
+    },
+    {
+      "id": 3,
+      "title": "CD Original Windows 98 Segunda Edición",
+      "description": "CD sellado con clave de licencia original. Para coleccionistas de sistemas operativos retro.",
+      "price": 15,
+      "seller": "matrix_hacker",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "💿",
+      "location": "Zion Core",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:19:55.555Z"
+    },
+    {
+      "id": 4,
+      "title": "Disquetera Zip Iomega 100MB Externa",
+      "description": "Lector de discos Zip para almacenamiento masivo. Excelente estado estético y funcional.",
+      "price": 90,
+      "seller": "matrix_hacker",
+      "category": "Subastas",
+      "condition": "Usado - Como Nuevo",
+      "icon": "💾",
+      "location": "Zion Core",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-10T23:26:20.546Z",
+      "auctionFinalized": true,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:21:20.546Z"
+    },
+    {
+      "id": 5,
+      "title": "Disquetera Zip Iomega 100MB Externa",
+      "description": "Lector de discos Zip para almacenamiento masivo. Excelente estado estético y funcional.",
+      "price": 90,
+      "seller": "pgp_pioneer",
+      "category": "Electronics",
+      "condition": "Usado - Como Nuevo",
+      "icon": "💾",
+      "location": "Suiza",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:45:37.642Z",
+      "sold": true
+    },
+    {
+      "id": 6,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "pgp_pioneer",
+      "category": "Electronics",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "Suiza",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:47:17.666Z",
+      "sold": true
+    },
+    {
+      "id": 7,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "win98_expert",
+      "category": "Electronics",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "Berlín, Alemania",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:51:18.948Z",
+      "sold": true
+    },
+    {
+      "id": 8,
+      "title": "Módem Externo USRobotics 56k",
+      "description": "Módem para conexión dial-up. Incluye cables RJ11 originales y fuente de alimentación.",
+      "price": 35,
+      "seller": "netscape_surfer",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "📼",
+      "location": "Seattle, EE.UU.",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-11T00:00:47.548Z",
+      "auctionFinalized": true,
+      "highestBidder": "dialup_surfer",
+      "timestamp": "2026-06-10T23:55:47.549Z"
+    },
+    {
+      "id": 9,
+      "title": "Procesador Intel Pentium III 800MHz",
+      "description": "Procesador Slot 1 clásico para placas de finales de los 90. En su caja original sin abrir.",
+      "price": 45,
+      "seller": "cyber_punk",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "⚡",
+      "location": "Neo-Tokyo",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:57:02.558Z",
+      "sold": true
+    },
+    {
+      "id": 10,
+      "title": "CD Original Windows 98 Segunda Edición",
+      "description": "CD sellado con clave de licencia original. Para coleccionistas de sistemas operativos retro.",
+      "price": 15,
+      "seller": "cyber_punk",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "💿",
+      "location": "Neo-Tokyo",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-11T00:02:27.573Z",
+      "auctionFinalized": true,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:57:27.573Z"
+    },
+    {
+      "id": 11,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "cyber_punk",
+      "category": "Electronics",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "Neo-Tokyo",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:57:52.581Z",
+      "sold": true
+    },
+    {
+      "id": 12,
+      "title": "Auriculares Retro tipo diadema Y2K",
+      "description": "Auriculares de espuma naranja ultra delgados. Estética Y2K retro de los años 2000.",
+      "price": 18,
+      "seller": "retro_collector",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "🎧",
+      "location": "Tokio, Japón",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:58:17.589Z",
+      "sold": true
+    },
+    {
+      "id": 13,
+      "title": "Placa Voodoo 3 3000 AGP 16MB",
+      "description": "Tarjeta de video clásica para jugar Unreal Tournament y Quake III. Funciona al 100%.",
+      "price": 75,
+      "seller": "dialup_surfer",
+      "category": "Subastas",
+      "condition": "Usado - Buen Estado",
+      "icon": "💿",
+      "location": "California, EE.UU.",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-11T00:03:42.604Z",
+      "auctionFinalized": true,
+      "highestBidder": null,
+      "timestamp": "2026-06-10T23:58:42.604Z"
+    },
+    {
+      "id": 14,
+      "title": "Manual de Criptografía Aplicada PGP 6.5",
+      "description": "Libro impreso original explicando el cifrado RSA y claves simétricas. Ideal para amantes de la privacidad.",
+      "price": 25,
+      "seller": "retro_collector",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "🔒",
+      "location": "Tokio, Japón",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:27:02.634Z",
+      "sold": true
+    },
+    {
+      "id": 15,
+      "title": "Teclado Mecánico IBM Model M Space Saving",
+      "description": "El rey de los teclados. Conector PS/2, clicky táctil impresionante. Hecho en 1993.",
+      "price": 160,
+      "seller": "mp3_hoarder",
+      "category": "Electronics",
+      "condition": "Usado - Excelente",
+      "icon": "⌨️",
+      "location": "Londres, Reino Unido",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:37:12.862Z",
+      "sold": true
+    },
+    {
+      "id": 16,
+      "title": "Módem Externo USRobotics 56k",
+      "description": "Módem para conexión dial-up. Incluye cables RJ11 originales y fuente de alimentación.",
+      "price": 35,
+      "seller": "irc_op",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "📼",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T01:42:37.868Z",
+      "auctionFinalized": true,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:37:37.868Z"
+    },
+    {
+      "id": 17,
+      "title": "CD Original Windows 98 Segunda Edición",
+      "description": "CD sellado con clave de licencia original. Para coleccionistas de sistemas operativos retro.",
+      "price": 15,
+      "seller": "retro_collector",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "💿",
+      "location": "Tokio, Japón",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T01:43:52.894Z",
+      "auctionFinalized": true,
+      "highestBidder": "pgp_pioneer",
+      "timestamp": "2026-06-12T01:38:52.894Z"
+    },
+    {
+      "id": 18,
+      "title": "Teclado Mecánico IBM Model M Space Saving",
+      "description": "El rey de los teclados. Conector PS/2, clicky táctil impresionante. Hecho en 1993.",
+      "price": 160,
+      "seller": "coaxial_expert",
+      "category": "Electronics",
+      "condition": "Usado - Excelente",
+      "icon": "⌨️",
+      "location": "París, Francia",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:39:53.661Z",
+      "sold": true
+    },
+    {
+      "id": 19,
+      "title": "Tarjeta de Red ISA Coaxial NE2000",
+      "description": "Tarjeta de red clásica de 10Mbps. Conector BNC coaxial. Probada y funcional.",
+      "price": 20,
+      "seller": "irc_op",
+      "category": "Subastas",
+      "condition": "Usado - Aceptable",
+      "icon": "🔌",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T01:46:21.771Z",
+      "auctionFinalized": true,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:41:21.771Z"
+    },
+    {
+      "id": 20,
+      "title": "Módem Externo USRobotics 56k",
+      "description": "Módem para conexión dial-up. Incluye cables RJ11 originales y fuente de alimentación.",
+      "price": 37,
+      "seller": "pgp_guru",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "📼",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T01:48:39.379Z",
+      "auctionFinalized": true,
+      "highestBidder": "irc_op",
+      "timestamp": "2026-06-12T01:43:39.379Z"
+    },
+    {
+      "id": 21,
+      "title": "Teclado Mecánico IBM Model M Space Saving",
+      "description": "El rey de los teclados. Conector PS/2, clicky táctil impresionante. Hecho en 1993.",
+      "price": 160,
+      "seller": "retro_collector",
+      "category": "Electronics",
+      "condition": "Usado - Excelente",
+      "icon": "⌨️",
+      "location": "Tokio, Japón",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T01:44:29.392Z",
+      "sold": true
+    },
+    {
+      "id": 22,
+      "title": "Auriculares Retro tipo diadema Y2K",
+      "description": "Auriculares de espuma naranja ultra delgados. Estética Y2K retro de los años 2000.",
+      "price": 18,
+      "seller": "retro_gamer",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "🎧",
+      "location": "Texas, EE.UU.",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:01:13.525Z",
+      "auctionFinalized": true,
+      "highestBidder": "agent67",
+      "timestamp": "2026-06-12T01:56:13.526Z"
+    },
+    {
+      "id": 23,
+      "title": "CD Original Windows 98 Segunda Edición",
+      "description": "CD sellado con clave de licencia original. Para coleccionistas de sistemas operativos retro.",
+      "price": 15,
+      "seller": "soundblaster_guy",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "💿",
+      "location": "París, Francia",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:02:23.337Z",
+      "auctionFinalized": true,
+      "highestBidder": "retro_gamer",
+      "timestamp": "2026-06-12T01:57:23.337Z"
+    },
+    {
+      "id": 24,
+      "title": "Disquetera Zip Iomega 100MB Externa",
+      "description": "Lector de discos Zip para almacenamiento masivo. Excelente estado estético y funcional.",
+      "price": 90,
+      "seller": "mp3_hoarder",
+      "category": "Electronics",
+      "condition": "Usado - Como Nuevo",
+      "icon": "💾",
+      "location": "Londres, Reino Unido",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:02:27.899Z",
+      "sold": true
+    },
+    {
+      "id": 25,
+      "title": "Procesador Intel Pentium III 800MHz",
+      "description": "Procesador Slot 1 clásico para placas de finales de los 90. En su caja original sin abrir.",
+      "price": 45,
+      "seller": "netscape_surfer",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "⚡",
+      "location": "Seattle, EE.UU.",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:07:51.787Z",
+      "auctionFinalized": true,
+      "highestBidder": "pgp_guru",
+      "timestamp": "2026-06-12T02:02:51.787Z"
+    },
+    {
+      "id": 26,
+      "title": "Procesador Intel Pentium III 800MHz",
+      "description": "Procesador Slot 1 clásico para placas de finales de los 90. En su caja original sin abrir.",
+      "price": 45,
+      "seller": "pgp_pioneer",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "⚡",
+      "location": "Suiza",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:05:38.734Z",
+      "sold": true
+    },
+    {
+      "id": 27,
+      "title": "Tarjeta de Red ISA Coaxial NE2000",
+      "description": "Tarjeta de red clásica de 10Mbps. Conector BNC coaxial. Probada y funcional.",
+      "price": 21,
+      "seller": "netscape_surfer",
+      "category": "Subastas",
+      "condition": "Usado - Aceptable",
+      "icon": "🔌",
+      "location": "Seattle, EE.UU.",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:12:22.665Z",
+      "auctionFinalized": true,
+      "highestBidder": "voodoo_master",
+      "timestamp": "2026-06-12T02:07:22.667Z"
+    },
+    {
+      "id": 28,
+      "title": "Auriculares Retro tipo diadema Y2K",
+      "description": "Auriculares de espuma naranja ultra delgados. Estética Y2K retro de los años 2000.",
+      "price": 18,
+      "seller": "irc_op",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "🎧",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:14:15.452Z",
+      "auctionFinalized": true,
+      "highestBidder": "pgp_pioneer",
+      "timestamp": "2026-06-12T02:09:15.452Z"
+    },
+    {
+      "id": 29,
+      "title": "Manual de Criptografía Aplicada PGP 6.5",
+      "description": "Libro impreso original explicando el cifrado RSA y claves simétricas. Ideal para amantes de la privacidad.",
+      "price": 25,
+      "seller": "amiga_fanatic",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "🔒",
+      "location": "Berlín, Alemania",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:09:40.456Z",
+      "sold": true
+    },
+    {
+      "id": 30,
+      "title": "Manual de Criptografía Aplicada PGP 6.5",
+      "description": "Libro impreso original explicando el cifrado RSA y claves simétricas. Ideal para amantes de la privacidad.",
+      "price": 25,
+      "seller": "pgp_guru",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "🔒",
+      "location": "Helsinki, Finlandia",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:10:55.473Z",
+      "sold": true
+    },
+    {
+      "id": 31,
+      "title": "Disquetera Zip Iomega 100MB Externa",
+      "description": "Lector de discos Zip para almacenamiento masivo. Excelente estado estético y funcional.",
+      "price": 90,
+      "seller": "retro_gamer",
+      "category": "Electronics",
+      "condition": "Usado - Como Nuevo",
+      "icon": "💾",
+      "location": "Texas, EE.UU.",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:12:35.505Z",
+      "sold": true
+    },
+    {
+      "id": 32,
+      "title": "Auriculares Retro tipo diadema Y2K",
+      "description": "Auriculares de espuma naranja ultra delgados. Estética Y2K retro de los años 2000.",
+      "price": 18,
+      "seller": "voodoo_master",
+      "category": "Electronics",
+      "condition": "Nuevo",
+      "icon": "🎧",
+      "location": "Austin, Texas",
+      "image": null,
+      "isAuction": false,
+      "auctionEnd": null,
+      "auctionFinalized": false,
+      "highestBidder": null,
+      "timestamp": "2026-06-12T02:13:25.510Z",
+      "sold": true
+    },
+    {
+      "id": 33,
+      "title": "Manual de Criptografía Aplicada PGP 6.5",
+      "description": "Libro impreso original explicando el cifrado RSA y claves simétricas. Ideal para amantes de la privacidad.",
+      "price": 29,
+      "seller": "mp3_hoarder",
+      "category": "Subastas",
+      "condition": "Nuevo",
+      "icon": "🔒",
+      "location": "Londres, Reino Unido",
+      "image": null,
+      "isAuction": true,
+      "auctionEnd": "2026-06-12T02:23:22.710Z",
+      "auctionFinalized": false,
+      "highestBidder": "coaxial_expert",
+      "timestamp": "2026-06-12T02:18:22.710Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-100001",
+      "productId": 2,
+      "productTitle": "[SUBASTA GANADA] Tarjeta de Red ISA Coaxial NE2000",
+      "price": 20,
+      "buyer": "agent67",
+      "seller": "matrix_hacker",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": "USPS-BOT-547519796",
+      "reviewed": false,
+      "timestamp": "2026-06-10T23:24:41.296Z"
+    },
+    {
+      "id": "ORD-100002",
+      "productId": 3,
+      "productTitle": "CD Original Windows 98 Segunda Edición",
+      "price": 15,
+      "buyer": "agent67",
+      "seller": "matrix_hacker",
+      "coin": "USDT",
+      "escrowMode": "direct",
+      "moderator": "None",
+      "status": "completed",
+      "shippingAddress": "urb los rastrojos venezuela\n",
+      "trackingNumber": "USPS-BOT-965792375",
+      "reviewed": false,
+      "timestamp": "2026-06-10T23:28:18.694Z"
+    },
+    {
+      "id": "ORD-100003",
+      "productId": 1,
+      "productTitle": "COCAINA 400g",
+      "price": 1200,
+      "buyer": "pgp_pioneer",
+      "seller": "agent67",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-10T23:48:35.893Z"
+    },
+    {
+      "id": "ORD-100004",
+      "productId": 8,
+      "productTitle": "[SUBASTA GANADA] Módem Externo USRobotics 56k",
+      "price": 35,
+      "buyer": "dialup_surfer",
+      "seller": "netscape_surfer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": "USPS-BOT-400416356",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:26:31.078Z"
+    },
+    {
+      "id": "ORD-100005",
+      "productId": 14,
+      "productTitle": "Manual de Criptografía Aplicada PGP 6.5",
+      "price": 25,
+      "buyer": "retro_collector",
+      "seller": "retro_collector",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-974801424",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:38:02.871Z"
+    },
+    {
+      "id": "ORD-100006",
+      "productId": 9,
+      "productTitle": "Procesador Intel Pentium III 800MHz",
+      "price": 45,
+      "buyer": "retro_collector",
+      "seller": "cyber_punk",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-372500286",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:38:27.878Z"
+    },
+    {
+      "id": "ORD-100007",
+      "productId": 7,
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "price": 75,
+      "buyer": "pgp_pioneer",
+      "seller": "win98_expert",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-342949880",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:39:08.835Z"
+    },
+    {
+      "id": "ORD-100008",
+      "productId": 11,
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "price": 75,
+      "buyer": "floppy_collector",
+      "seller": "cyber_punk",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-482478865",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:41:51.962Z"
+    },
+    {
+      "id": "ORD-100009",
+      "productId": 6,
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "price": 75,
+      "buyer": "cyber_punk",
+      "seller": "pgp_pioneer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-611627719",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:43:19.391Z"
+    },
+    {
+      "id": "ORD-100010",
+      "productId": 5,
+      "productTitle": "Disquetera Zip Iomega 100MB Externa",
+      "price": 90,
+      "buyer": "floppy_collector",
+      "seller": "pgp_pioneer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-702327788",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:48:28.608Z"
+    },
+    {
+      "id": "ORD-100011",
+      "productId": 17,
+      "productTitle": "[SUBASTA GANADA] CD Original Windows 98 Segunda Edición",
+      "price": 15,
+      "buyer": "pgp_pioneer",
+      "seller": "retro_collector",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": "USPS-BOT-833579613",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:49:11.076Z"
+    },
+    {
+      "id": "ORD-100012",
+      "productId": 20,
+      "productTitle": "[SUBASTA GANADA] Módem Externo USRobotics 56k",
+      "price": 37,
+      "buyer": "irc_op",
+      "seller": "pgp_guru",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": "USPS-BOT-918250942",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:49:11.076Z"
+    },
+    {
+      "id": "ORD-100013",
+      "productId": 21,
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "price": 160,
+      "buyer": "bios_flash",
+      "seller": "retro_collector",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-119118193",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:50:57.617Z"
+    },
+    {
+      "id": "ORD-100014",
+      "productId": 18,
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "price": 160,
+      "buyer": "retro_collector",
+      "seller": "coaxial_expert",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-448973238",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:52:37.638Z"
+    },
+    {
+      "id": "ORD-100015",
+      "productId": 15,
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "price": 160,
+      "buyer": "mp3_hoarder",
+      "seller": "mp3_hoarder",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-464630783",
+      "reviewed": true,
+      "timestamp": "2026-06-12T01:56:33.333Z"
+    },
+    {
+      "id": "ORD-100016",
+      "productId": 26,
+      "productTitle": "Procesador Intel Pentium III 800MHz",
+      "price": 45,
+      "buyer": "pgp_guru",
+      "seller": "pgp_pioneer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:06:03.742Z"
+    },
+    {
+      "id": "ORD-100017",
+      "productId": 24,
+      "productTitle": "Disquetera Zip Iomega 100MB Externa",
+      "price": 90,
+      "buyer": "coaxial_expert",
+      "seller": "mp3_hoarder",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": "USPS-BOT-513869212",
+      "reviewed": true,
+      "timestamp": "2026-06-12T02:08:25.436Z"
+    },
+    {
+      "id": "ORD-100018",
+      "productId": 30,
+      "productTitle": "Manual de Criptografía Aplicada PGP 6.5",
+      "price": 25,
+      "buyer": "netscape_surfer",
+      "seller": "pgp_guru",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:11:20.480Z"
+    },
+    {
+      "id": "ORD-100019",
+      "productId": 12,
+      "productTitle": "Auriculares Retro tipo diadema Y2K",
+      "price": 18,
+      "buyer": "retro_collector",
+      "seller": "retro_collector",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:12:10.496Z"
+    },
+    {
+      "id": "ORD-100020",
+      "productId": 31,
+      "productTitle": "Disquetera Zip Iomega 100MB Externa",
+      "price": 90,
+      "buyer": "netscape_surfer",
+      "seller": "retro_gamer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:13:50.514Z"
+    },
+    {
+      "id": "ORD-100021",
+      "productId": 32,
+      "productTitle": "Auriculares Retro tipo diadema Y2K",
+      "price": 18,
+      "buyer": "coaxial_expert",
+      "seller": "voodoo_master",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:15:05.546Z"
+    },
+    {
+      "id": "ORD-100022",
+      "productId": 22,
+      "productTitle": "[SUBASTA GANADA] Auriculares Retro tipo diadema Y2K",
+      "price": 18,
+      "buyer": "agent67",
+      "seller": "retro_gamer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:18:36.474Z"
+    },
+    {
+      "id": "ORD-100023",
+      "productId": 23,
+      "productTitle": "[SUBASTA GANADA] CD Original Windows 98 Segunda Edición",
+      "price": 15,
+      "buyer": "retro_gamer",
+      "seller": "soundblaster_guy",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:18:36.474Z"
+    },
+    {
+      "id": "ORD-100024",
+      "productId": 25,
+      "productTitle": "[SUBASTA GANADA] Procesador Intel Pentium III 800MHz",
+      "price": 45,
+      "buyer": "pgp_guru",
+      "seller": "netscape_surfer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:18:36.474Z"
+    },
+    {
+      "id": "ORD-100025",
+      "productId": 27,
+      "productTitle": "[SUBASTA GANADA] Tarjeta de Red ISA Coaxial NE2000",
+      "price": 21,
+      "buyer": "voodoo_master",
+      "seller": "netscape_surfer",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:18:36.474Z"
+    },
+    {
+      "id": "ORD-100026",
+      "productId": 28,
+      "productTitle": "[SUBASTA GANADA] Auriculares Retro tipo diadema Y2K",
+      "price": 18,
+      "buyer": "pgp_pioneer",
+      "seller": "irc_op",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "completed",
+      "shippingAddress": "Dirección registrada en perfil de subasta",
+      "trackingNumber": "USPS-BOT-593480503",
+      "reviewed": true,
+      "timestamp": "2026-06-12T02:18:36.474Z"
+    },
+    {
+      "id": "ORD-100027",
+      "productId": 29,
+      "productTitle": "Manual de Criptografía Aplicada PGP 6.5",
+      "price": 25,
+      "buyer": "retro_gamer",
+      "seller": "amiga_fanatic",
+      "coin": "USDT",
+      "escrowMode": "multisig",
+      "moderator": "ArbiterNode_Kraken",
+      "status": "funded",
+      "shippingAddress": "Dirección cifrada con PGP - Nodo Bot",
+      "trackingNumber": null,
+      "reviewed": false,
+      "timestamp": "2026-06-12T02:20:27.045Z"
+    }
+  ],
+  "chats": [
+    {
+      "id": 1,
+      "from": "dialup_surfer",
+      "to": "netscape_surfer",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "[SUBASTA GANADA] Módem Externo USRobotics 56k",
+      "productId": 8,
+      "timestamp": "2026-06-12T01:36:52.857Z"
+    },
+    {
+      "id": 2,
+      "from": "pgp_pioneer",
+      "to": "win98_expert",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "productId": 7,
+      "timestamp": "2026-06-12T01:41:21.767Z"
+    },
+    {
+      "id": 3,
+      "from": "retro_collector",
+      "to": "retro_collector",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Manual de Criptografía Aplicada PGP 6.5",
+      "productId": 14,
+      "timestamp": "2026-06-12T01:42:36.953Z"
+    },
+    {
+      "id": 4,
+      "from": "cyber_punk",
+      "to": "pgp_pioneer",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "productId": 6,
+      "timestamp": "2026-06-12T01:47:40.950Z"
+    },
+    {
+      "id": 5,
+      "from": "floppy_collector",
+      "to": "pgp_pioneer",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Disquetera Zip Iomega 100MB Externa",
+      "productId": 5,
+      "timestamp": "2026-06-12T01:49:02.552Z"
+    },
+    {
+      "id": 6,
+      "from": "irc_op",
+      "to": "pgp_guru",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "[SUBASTA GANADA] Módem Externo USRobotics 56k",
+      "productId": 20,
+      "timestamp": "2026-06-12T01:49:47.556Z"
+    },
+    {
+      "id": 7,
+      "from": "retro_collector",
+      "to": "cyber_punk",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Procesador Intel Pentium III 800MHz",
+      "productId": 9,
+      "timestamp": "2026-06-12T01:54:17.678Z"
+    },
+    {
+      "id": 8,
+      "from": "tester_user",
+      "to": "matrix_hacker",
+      "text": "¿Qué opinas del cifrado RSA de 2048 bits vs 4096 bits? ¿Y de tu clave PGP?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T01:54:54.600Z"
+    },
+    {
+      "id": 9,
+      "from": "matrix_hacker",
+      "to": "tester_user",
+      "text": "Jajaja, 4096 bits es mucho mejor, más seguro! Mi clave PGP es 4096 bits, solo uso claves fuertes. No quiero que me roben mi identidad en Zion Core :-P.",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T01:54:58.257Z"
+    },
+    {
+      "id": 10,
+      "from": "tester_user",
+      "to": "retro_gamer",
+      "text": "¿Qué tal el Quake? ¿Te interesa mi IBM Model M para jugarlo?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T01:55:05.779Z"
+    },
+    {
+      "id": 11,
+      "from": "retro_collector",
+      "to": "coaxial_expert",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "productId": 18,
+      "timestamp": "2026-06-12T01:55:09.597Z"
+    },
+    {
+      "id": 12,
+      "from": "retro_gamer",
+      "to": "tester_user",
+      "text": "jajaja, ¡me encanta el Quake! Tmb me interesa el IBM Model M, ¿cómo está? ¿Cuánto cuesta?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T01:55:09.652Z"
+    },
+    {
+      "id": 13,
+      "from": "pgp_pioneer",
+      "to": "retro_collector",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "[SUBASTA GANADA] CD Original Windows 98 Segunda Edición",
+      "productId": 17,
+      "timestamp": "2026-06-12T01:55:34.605Z"
+    },
+    {
+      "id": 14,
+      "from": "bios_flash",
+      "to": "retro_collector",
+      "text": "¡Hola! Ya recibí el paquete en perfectas condiciones. Acabo de liberar los fondos del Escrow y te he dejado una valoración de 5 estrellas. ¡Muchas gracias!",
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "productId": 21,
+      "timestamp": "2026-06-12T01:56:13.509Z"
+    },
+    {
+      "id": 15,
+      "from": "floppy_collector",
+      "to": "cyber_punk",
+      "text": "Hola! :-D Recibí el paquete y todo está perfecto, gracias! Q liberé el dinero de Escrow, listo para ir por más retro gaming. ¡Gracias por todo!",
+      "productTitle": "Placa Voodoo 3 3000 AGP 16MB",
+      "productId": 11,
+      "timestamp": "2026-06-12T02:02:27.894Z"
+    },
+    {
+      "id": 16,
+      "from": "mp3_hoarder",
+      "to": "mp3_hoarder",
+      "text": "Hola! El paquete llegó bien, gracias por el teclado! Acabo de liberar los fondos de Escrow :-D. ¡Muy buenas transacciones!",
+      "productTitle": "Teclado Mecánico IBM Model M Space Saving",
+      "productId": 15,
+      "timestamp": "2026-06-12T02:04:24.734Z"
+    },
+    {
+      "id": 17,
+      "from": "tester_user",
+      "to": "retro_gamer",
+      "text": "¿Qué tal el Quake? ¿Te interesa mi IBM Model M para jugarlo?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T02:18:03.766Z"
+    },
+    {
+      "id": 18,
+      "from": "retro_gamer",
+      "to": "tester_user",
+      "text": "jajaja, el Quake es el rey de los FPS, me encanta! Tmb estoy buscando una buena tarjeta de sonido, ¿no tienes una Sound Blaster que vender?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T02:18:07.480Z"
+    },
+    {
+      "id": 19,
+      "from": "coaxial_expert",
+      "to": "mp3_hoarder",
+      "text": "Hola mp3_hoarder, he recibido el paquete y está en perfectas condiciones, así que ya he liberado los fondos de Escrow, gracias por la transacción y buena suerte con tus compras futuras :-)",
+      "productTitle": "Disquetera Zip Iomega 100MB Externa",
+      "productId": 24,
+      "timestamp": "2026-06-12T02:18:22.702Z"
+    },
+    {
+      "id": 20,
+      "from": "pgp_pioneer",
+      "to": "irc_op",
+      "text": "¡Genial! Recibí el paquete de diademas retro en perfecto estado. Ya liberé el dinero en Escrow. ¡Muchas gracias, irc_op! :-)",
+      "productTitle": "[SUBASTA GANADA] Auriculares Retro tipo diadema Y2K",
+      "productId": 28,
+      "timestamp": "2026-06-12T02:22:32.805Z"
+    },
+    {
+      "id": 21,
+      "from": "tester_user",
+      "to": "retro_gamer",
+      "text": "¿Qué tal el Quake? ¿Te interesa mi IBM Model M para jugarlo?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T02:25:01.589Z"
+    },
+    {
+      "id": 22,
+      "from": "retro_gamer",
+      "to": "tester_user",
+      "text": ":-) Quake es el rey de los FPS, lo juego todos los días. ¿Cuánto cuesta el IBM Model M?",
+      "productTitle": "IBM Model M",
+      "productId": 1,
+      "timestamp": "2026-06-12T02:25:05.279Z"
+    }
+  ],
+  "transactions": [
+    {
+      "username": "agent67",
+      "type": "deposit",
+      "coin": "BTC",
+      "amount": 100,
+      "usdValue": 100,
+      "txHash": "0xcejn8130230ef",
+      "timestamp": "2026-06-10T23:21:43.668Z"
+    },
+    {
+      "username": "agent67",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 20,
+      "usdValue": 20,
+      "txHash": "0xc0513f012a510d30e0999a33cc5a8f5c6a30819f",
+      "timestamp": "2026-06-10T23:23:10.884Z"
+    },
+    {
+      "username": "agent67",
+      "type": "escrow_lock",
+      "coin": "USDT",
+      "amount": 15,
+      "usdValue": 15,
+      "txHash": "0x704b8c25b70ff98659154f5bbc1c645ee26acfa3",
+      "timestamp": "2026-06-10T23:28:18.723Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 1300,
+      "usdValue": 1300,
+      "txHash": "0x2604ae353dcd0c0efdd7854a4a0570c5390bf758",
+      "timestamp": "2026-06-10T23:48:35.892Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 1200,
+      "usdValue": 1200,
+      "txHash": "0xe23ef4d93a4df221b66f107c03fac98d8aab0f7f",
+      "timestamp": "2026-06-10T23:48:35.893Z"
+    },
+    {
+      "username": "dialup_surfer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 135,
+      "usdValue": 135,
+      "txHash": "0xe7181e941c57269d62ad0d4e987b4e75757705ae",
+      "timestamp": "2026-06-10T23:59:32.613Z"
+    },
+    {
+      "username": "dialup_surfer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 35,
+      "usdValue": 35,
+      "txHash": "0x0b78924a633b9e33c07391426b3070afe35af08b",
+      "timestamp": "2026-06-10T23:59:32.614Z"
+    },
+    {
+      "username": "netscape_surfer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 35,
+      "usdValue": 35,
+      "txHash": "0x123fe4250b668bd1a163bbe34e3a6d6589ee2f9e",
+      "timestamp": "2026-06-12T01:36:52.855Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 125,
+      "usdValue": 125,
+      "txHash": "0x4c7fb18d040e5b74e5e2153459d87a03afa52934",
+      "timestamp": "2026-06-12T01:38:02.870Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0x61dd6fec69435ee9f3f63a836498bead12a477ac",
+      "timestamp": "2026-06-12T01:38:02.871Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 45,
+      "usdValue": 45,
+      "txHash": "0x224d6781247479d92c403411b6bfb06f141ab9db",
+      "timestamp": "2026-06-12T01:38:27.878Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0x606f2d045b3da3467a389346aed37efd0db81bd0",
+      "timestamp": "2026-06-12T01:39:08.652Z"
+    },
+    {
+      "username": "win98_expert",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0xd95fbf262fd5ca8fb56d438590f16691120a73a8",
+      "timestamp": "2026-06-12T01:41:21.765Z"
+    },
+    {
+      "username": "floppy_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 175,
+      "usdValue": 175,
+      "txHash": "0x29a482e789825049ad820c88e81375799ced1552",
+      "timestamp": "2026-06-12T01:41:51.958Z"
+    },
+    {
+      "username": "floppy_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0x10dc71ab144d3d65968db5f4f83e8b640dfdbd9e",
+      "timestamp": "2026-06-12T01:41:51.962Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0x346cc8f7321d2c7576fd5345907e3490bac30f50",
+      "timestamp": "2026-06-12T01:42:36.953Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 15,
+      "usdValue": 15,
+      "txHash": "0x8a55cb4b4fc6b09f66a756514b8703230e6148fa",
+      "timestamp": "2026-06-12T01:42:36.957Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 175,
+      "usdValue": 175,
+      "txHash": "0xe493fb5e903804b21702cef91d7244bf9c60d14d",
+      "timestamp": "2026-06-12T01:43:19.389Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0x547b2ee91c0aff2e94c7012fe65939cc4e19e851",
+      "timestamp": "2026-06-12T01:43:19.391Z"
+    },
+    {
+      "username": "win98_expert",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 35,
+      "usdValue": 35,
+      "txHash": "0xbba2926120864ddeca3b72ff8205e2f0776d78ee",
+      "timestamp": "2026-06-12T01:44:54.393Z"
+    },
+    {
+      "username": "matrix_hacker",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 136,
+      "usdValue": 136,
+      "txHash": "0xcb0c75bc67d7bcb25218b616acdb71b974420740",
+      "timestamp": "2026-06-12T01:46:00.989Z"
+    },
+    {
+      "username": "win98_expert",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 35,
+      "usdValue": 35,
+      "txHash": "0x96a0dd262065bedf178d15834e2869fad9ef00f8",
+      "timestamp": "2026-06-12T01:46:01.226Z"
+    },
+    {
+      "username": "matrix_hacker",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 36,
+      "usdValue": 36,
+      "txHash": "0xbc249c24108808df6281b0ca5d119aa42dcceb9c",
+      "timestamp": "2026-06-12T01:46:01.226Z"
+    },
+    {
+      "username": "irc_op",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 137,
+      "usdValue": 137,
+      "txHash": "0x550206dfce75123fa540cd751698f49e4a37e7bd",
+      "timestamp": "2026-06-12T01:46:50.971Z"
+    },
+    {
+      "username": "matrix_hacker",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 36,
+      "usdValue": 36,
+      "txHash": "0xcae08e6a73a06221990f88f3a772cea49ddf1b2a",
+      "timestamp": "2026-06-12T01:46:50.971Z"
+    },
+    {
+      "username": "irc_op",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 37,
+      "usdValue": 37,
+      "txHash": "0xe55f917745af18f17f796eaa44039a65f3e2a981",
+      "timestamp": "2026-06-12T01:46:50.971Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0x71334828086cac5d56f49c8cb87ac2b50456d958",
+      "timestamp": "2026-06-12T01:47:40.950Z"
+    },
+    {
+      "username": "floppy_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 90,
+      "usdValue": 90,
+      "txHash": "0x4395cc83196bbdec7c3418fee8362e3d920a7a0e",
+      "timestamp": "2026-06-12T01:48:28.605Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 90,
+      "usdValue": 90,
+      "txHash": "0xf888e9a4278e17d6688d0d38eefb8b22a57f074f",
+      "timestamp": "2026-06-12T01:49:02.551Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 37,
+      "usdValue": 37,
+      "txHash": "0x72978698130c63eb3189c0351d82da7ce58d679f",
+      "timestamp": "2026-06-12T01:49:47.556Z"
+    },
+    {
+      "username": "bios_flash",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 260,
+      "usdValue": 260,
+      "txHash": "0x64160627d1ace5077524c7bb0f0152c9efc2adf8",
+      "timestamp": "2026-06-12T01:50:57.615Z"
+    },
+    {
+      "username": "bios_flash",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0x6f28bc877fb13cd42213b7f1c5c0a14865cc3e6b",
+      "timestamp": "2026-06-12T01:50:57.617Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 260,
+      "usdValue": 260,
+      "txHash": "0x04db06818452f2ac6a0a0ee45cae524011557a8c",
+      "timestamp": "2026-06-12T01:52:37.638Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0x15bdb44d02882599c739f385cc0cdac67b934f20",
+      "timestamp": "2026-06-12T01:52:37.638Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 45,
+      "usdValue": 45,
+      "txHash": "0xda164cec75022abf5e1f4def05181b6fcff516cd",
+      "timestamp": "2026-06-12T01:54:17.678Z"
+    },
+    {
+      "username": "coaxial_expert",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0x9eb54aab01a8b6214e1707f1a7d0b33de87bb033",
+      "timestamp": "2026-06-12T01:55:09.597Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 15,
+      "usdValue": 15,
+      "txHash": "0x847a13eec5ae34b5ca6be51172e3333282ced34a",
+      "timestamp": "2026-06-12T01:55:34.605Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0xfd716fd26ae3e7d3eebd455266893f46a719b47e",
+      "timestamp": "2026-06-12T01:56:13.335Z"
+    },
+    {
+      "username": "mp3_hoarder",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 260,
+      "usdValue": 260,
+      "txHash": "0xbd6da87a7a337d695937e1d9e26eba6957e4b581",
+      "timestamp": "2026-06-12T01:56:33.333Z"
+    },
+    {
+      "username": "mp3_hoarder",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0xf3bbb5d2e9cab63d9db9a350ee654f38bcd5ff8c",
+      "timestamp": "2026-06-12T01:56:33.333Z"
+    },
+    {
+      "username": "agent67",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0xe408b998f486443bd37205ae7a8206cb1f03316f",
+      "timestamp": "2026-06-12T01:56:56.265Z"
+    },
+    {
+      "username": "retro_gamer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 115,
+      "usdValue": 115,
+      "txHash": "0x163b3ef54f8b359bd1762aacd91aaa75163ccb85",
+      "timestamp": "2026-06-12T02:01:41.777Z"
+    },
+    {
+      "username": "retro_gamer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 15,
+      "usdValue": 15,
+      "txHash": "0x96d5a9679ce82c4ac74541f898a3c5c8c073ca85",
+      "timestamp": "2026-06-12T02:01:41.779Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 75,
+      "usdValue": 75,
+      "txHash": "0xd039eeadc3c1fc39926cbfcdf982266ac665dfe2",
+      "timestamp": "2026-06-12T02:02:26.772Z"
+    },
+    {
+      "username": "mp3_hoarder",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 160,
+      "usdValue": 160,
+      "txHash": "0xe8da7977b9716c94053d7a6f204201f1b846c17f",
+      "timestamp": "2026-06-12T02:04:23.720Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 145,
+      "usdValue": 145,
+      "txHash": "0x283ed3817a779ff766a31d201e789c169dea86b0",
+      "timestamp": "2026-06-12T02:06:03.742Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 45,
+      "usdValue": 45,
+      "txHash": "0xa6d6fd3111b59b6668b62354c7d3b4affc4dfdcc",
+      "timestamp": "2026-06-12T02:06:03.742Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 45,
+      "usdValue": 45,
+      "txHash": "0x9b34f268665f521292a6a40745beaa5433ee6c10",
+      "timestamp": "2026-06-12T02:06:28.745Z"
+    },
+    {
+      "username": "amiga_fanatic",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 120,
+      "usdValue": 120,
+      "txHash": "0x40679af3b137968bd3b446218cb2f692c5be792a",
+      "timestamp": "2026-06-12T02:08:05.441Z"
+    },
+    {
+      "username": "amiga_fanatic",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 20,
+      "usdValue": 20,
+      "txHash": "0xd8e4a55218d363c243656f3bf3b974549cf076ae",
+      "timestamp": "2026-06-12T02:08:05.444Z"
+    },
+    {
+      "username": "coaxial_expert",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 90,
+      "usdValue": 90,
+      "txHash": "0x950aac07823ce4a34d3cdeeb61615c616fadee9d",
+      "timestamp": "2026-06-12T02:08:25.436Z"
+    },
+    {
+      "username": "netscape_surfer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0x20f65654f2b61188d7c1455f1e227ca55f08fea0",
+      "timestamp": "2026-06-12T02:11:20.480Z"
+    },
+    {
+      "username": "voodoo_master",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 121,
+      "usdValue": 121,
+      "txHash": "0x093042ef07c337bb27e9a1a51f9be8d362eb94d6",
+      "timestamp": "2026-06-12T02:11:45.486Z"
+    },
+    {
+      "username": "amiga_fanatic",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 20,
+      "usdValue": 20,
+      "txHash": "0x969e050e6a8ffdbd4ea90c5361564c08ba400480",
+      "timestamp": "2026-06-12T02:11:45.486Z"
+    },
+    {
+      "username": "voodoo_master",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 21,
+      "usdValue": 21,
+      "txHash": "0xd7a69df3c42ca754e68cd1f62a5ecee64ec31569",
+      "timestamp": "2026-06-12T02:11:45.486Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0xaade1b28812295b94056c81f040e2171c09cec80",
+      "timestamp": "2026-06-12T02:12:10.496Z"
+    },
+    {
+      "username": "pgp_pioneer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0x579dc9be97d4f3fe9a31e54479db1d4e0c82ce0f",
+      "timestamp": "2026-06-12T02:13:00.507Z"
+    },
+    {
+      "username": "netscape_surfer",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 190,
+      "usdValue": 190,
+      "txHash": "0xd7a7746754d13dede0561e07cd1595214f061442",
+      "timestamp": "2026-06-12T02:13:50.514Z"
+    },
+    {
+      "username": "netscape_surfer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 90,
+      "usdValue": 90,
+      "txHash": "0xf78ea9f0f14cf40c0836a7aa1d2bfb4c99f4f107",
+      "timestamp": "2026-06-12T02:13:50.514Z"
+    },
+    {
+      "username": "coaxial_expert",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0xc21b48ed5feb78d2481f859159fc52a2082bb4fa",
+      "timestamp": "2026-06-12T02:15:05.546Z"
+    },
+    {
+      "username": "mp3_hoarder",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 90,
+      "usdValue": 90,
+      "txHash": "0x834752771d81f8b35f8746e00331f3fdbaff55de",
+      "timestamp": "2026-06-12T02:18:22.029Z"
+    },
+    {
+      "username": "matrix_hacker",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0x2f9c8944f5b96b5e36ee3014056e6ed37376946b",
+      "timestamp": "2026-06-12T02:19:12.033Z"
+    },
+    {
+      "username": "retro_gamer",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0x89a9a744050933b54becdeef2685a3a2eab2c4de",
+      "timestamp": "2026-06-12T02:20:27.045Z"
+    },
+    {
+      "username": "matrix_hacker",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 25,
+      "usdValue": 25,
+      "txHash": "0xc07a2b861385524a4fa3de0c172b5053af323c62",
+      "timestamp": "2026-06-12T02:20:52.049Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 26,
+      "usdValue": 26,
+      "txHash": "0x6d5a815322d42170164acd978aee0b885035b909",
+      "timestamp": "2026-06-12T02:20:52.049Z"
+    },
+    {
+      "username": "retro_collector",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 26,
+      "usdValue": 26,
+      "txHash": "0x63a164d5479afd3e6ce9b69098a6e13d91b3f939",
+      "timestamp": "2026-06-12T02:21:17.067Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 27,
+      "usdValue": 27,
+      "txHash": "0x3a9c6c696c61497eb166e3f085fea35571c5b68c",
+      "timestamp": "2026-06-12T02:21:17.067Z"
+    },
+    {
+      "username": "irc_op",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 18,
+      "usdValue": 18,
+      "txHash": "0xc8166d682022cd93abc0c9a6b500aa3f2cf70e8f",
+      "timestamp": "2026-06-12T02:22:32.084Z"
+    },
+    {
+      "username": "pgp_guru",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 27,
+      "usdValue": 27,
+      "txHash": "0xe4ce81a4a019cc088063cb2a39198bcdbff79ea4",
+      "timestamp": "2026-06-12T02:22:32.810Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 28,
+      "usdValue": 28,
+      "txHash": "0xa64db0e78330b52c520542c003517bf9e88bf03e",
+      "timestamp": "2026-06-12T02:22:32.810Z"
+    },
+    {
+      "username": "cyber_punk",
+      "type": "deposit",
+      "coin": "USDT",
+      "amount": 28,
+      "usdValue": 28,
+      "txHash": "0xc1cf1f0326e27a65e96db09db4df2ee1e0de1583",
+      "timestamp": "2026-06-12T02:22:57.089Z"
+    },
+    {
+      "username": "coaxial_expert",
+      "type": "withdrawal",
+      "coin": "USDT",
+      "amount": 29,
+      "usdValue": 29,
+      "txHash": "0xdd1760bbdfe8e0367e890a6d877a21bfbcf3200b",
+      "timestamp": "2026-06-12T02:22:57.089Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "orderId": "ORD-100004",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "dialup_surfer",
+      "toUser": "netscape_surfer",
+      "timestamp": "2026-06-12T01:36:52.857Z"
+    },
+    {
+      "id": 2,
+      "orderId": "ORD-100007",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "pgp_pioneer",
+      "toUser": "win98_expert",
+      "timestamp": "2026-06-12T01:41:21.767Z"
+    },
+    {
+      "id": 3,
+      "orderId": "ORD-100005",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "retro_collector",
+      "toUser": "retro_collector",
+      "timestamp": "2026-06-12T01:42:36.953Z"
+    },
+    {
+      "id": 4,
+      "orderId": "ORD-100009",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "cyber_punk",
+      "toUser": "pgp_pioneer",
+      "timestamp": "2026-06-12T01:47:40.950Z"
+    },
+    {
+      "id": 5,
+      "orderId": "ORD-100010",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "floppy_collector",
+      "toUser": "pgp_pioneer",
+      "timestamp": "2026-06-12T01:49:02.552Z"
+    },
+    {
+      "id": 6,
+      "orderId": "ORD-100012",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "irc_op",
+      "toUser": "pgp_guru",
+      "timestamp": "2026-06-12T01:49:47.556Z"
+    },
+    {
+      "id": 7,
+      "orderId": "ORD-100006",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "retro_collector",
+      "toUser": "cyber_punk",
+      "timestamp": "2026-06-12T01:54:17.678Z"
+    },
+    {
+      "id": 8,
+      "orderId": "ORD-100014",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "retro_collector",
+      "toUser": "coaxial_expert",
+      "timestamp": "2026-06-12T01:55:09.597Z"
+    },
+    {
+      "id": 9,
+      "orderId": "ORD-100011",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "pgp_pioneer",
+      "toUser": "retro_collector",
+      "timestamp": "2026-06-12T01:55:34.605Z"
+    },
+    {
+      "id": 10,
+      "orderId": "ORD-100013",
+      "rating": 5,
+      "comment": "¡Excelente vendedor! Envío muy rápido y el artículo está tal como se describió. Recomendado 100%.",
+      "fromUser": "bios_flash",
+      "toUser": "retro_collector",
+      "timestamp": "2026-06-12T01:56:13.509Z"
+    },
+    {
+      "id": 11,
+      "orderId": "ORD-100008",
+      "rating": 5,
+      "comment": "No puedo creer lo que he encontrado! La placa Voodoo 3 3000 AGP 16MB que compré llegó en perfectas condiciones y funciona como un reloj, juego con mi PC y es una pasada, recomendada para cualquier coleccionista de hardware retro como yo\" - floppy_collector.",
+      "fromUser": "floppy_collector",
+      "toUser": "cyber_punk",
+      "timestamp": "2026-06-12T02:02:27.503Z"
+    },
+    {
+      "id": 12,
+      "orderId": "ORD-100015",
+      "rating": 5,
+      "comment": "¡Genial compra! El teclado mecanico IBM Model M Space Saving es perfecto para mi PC, ahora puedo editar mis archivos MP3 sin problemas\" - mp3_hoarder",
+      "fromUser": "mp3_hoarder",
+      "toUser": "mp3_hoarder",
+      "timestamp": "2026-06-12T02:04:24.220Z"
+    },
+    {
+      "id": 13,
+      "orderId": "ORD-100017",
+      "rating": 5,
+      "comment": "Excelente compra! La Disquetera Zip Iomega 100MB Externa llegó en perfectas condiciones y funciona perfectamente con mi viejo PC. ¡Muchas gracias, mp3_hoarder, por la transacción sin problemas!",
+      "fromUser": "coaxial_expert",
+      "toUser": "mp3_hoarder",
+      "timestamp": "2026-06-12T02:18:22.440Z"
+    },
+    {
+      "id": 14,
+      "orderId": "ORD-100026",
+      "rating": 5,
+      "comment": "5 estrellas sin duda. Me encantaron los auriculares tipo diadema. Funcionaron como se esperaba y el precio fue muy razonable para un producto retro como este.",
+      "fromUser": "pgp_pioneer",
+      "toUser": "irc_op",
+      "timestamp": "2026-06-12T02:22:32.519Z"
+    }
+  ],
+  "nextProductId": 34,
+  "nextOrderId": 28,
+  "threads": [
+    {
+      "id": 1,
+      "category": "scammers",
+      "title": "Мошенник украл у меня более 10 000 долларов.",
+      "author": "agent67",
+      "content": "Когда я пользовался Silk Road, я регулярно покупал фентанил, кокаин, марихуану и другие наркотики.\n\nПока не случилось нечто поистине невероятное: когда я попытался купить небольшое количество наркотиков на MEGA, с меня взяли 5000 долларов за доставку, а остальное пришло в ужасном состоянии. Не может быть! Я уже перешёл на KRAKEN. Прощай, MEGA!",
+      "replies": [
+        {
+          "author": "agent67",
+          "content": "lol",
+          "timestamp": "2026-06-06T02:57:03.412Z"
+        },
+        {
+          "author": "retro_collector",
+          "content": "Reporten su nodo de red para que sea bloqueado del diagnóstico.",
+          "timestamp": "2026-06-12T01:27:27.633Z"
+        },
+        {
+          "author": "pgp_guru",
+          "content": "Gracias por avisar. Lo añadiré a mi lista negra local.",
+          "timestamp": "2026-06-12T01:46:25.935Z"
+        }
+      ],
+      "timestamp": "2026-06-06T02:56:46.259Z"
+    },
+    {
+      "id": 2,
+      "category": "security",
+      "title": "¿Sigue siendo seguro el cifrado RSA de 1024 bits?",
+      "author": "matrix_hacker",
+      "content": "He visto que algunos recomiendan migrar a 2048 o 4096 bits para llaves PGP. ¿Creen que los nodos del gobierno ya puedan romper 1024?",
+      "replies": [
+        {
+          "author": "agent67",
+          "content": "no se bro\n",
+          "timestamp": "2026-06-10T23:21:05.086Z"
+        },
+        {
+          "author": "voodoo_master",
+          "content": "Yo uso llaves PGP de 2048 bits para mis chats en MSN y firmar mis transacciones, me parece el equilibrio perfecto.",
+          "timestamp": "2026-06-12T01:51:47.628Z"
+        }
+      ],
+      "timestamp": "2026-06-10T23:18:16.283Z"
+    },
+    {
+      "id": 3,
+      "category": "arbitrage",
+      "title": "Recomendación del árbitro ArbiterNode_Kraken",
+      "author": "matrix_hacker",
+      "content": "Tuve un problema con un envío que llegó roto y el árbitro resolvió de manera justa reembolsándome los fondos en 24 horas. ¡Excelente soporte de la plataforma!",
+      "replies": [
+        {
+          "author": "matrix_hacker",
+          "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
+          "timestamp": "2026-06-10T23:20:35.557Z"
+        },
+        {
+          "author": "matrix_hacker",
+          "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
+          "timestamp": "2026-06-10T23:26:35.576Z"
+        },
+        {
+          "author": "pgp_guru",
+          "content": "Sí, el sistema de Escrow de Kraken es lo que lo hace confiable.",
+          "timestamp": "2026-06-12T01:49:02.555Z"
+        },
+        {
+          "author": "retro_collector",
+          "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
+          "timestamp": "2026-06-12T02:03:46.695Z"
+        },
+        {
+          "author": "retro_gamer",
+          "content": "Es fundamental usar siempre el depósito de garantía en todas las compras.",
+          "timestamp": "2026-06-12T02:07:42.662Z"
+        },
+        {
+          "author": "mp3_hoarder",
+          "content": "Es fundamental usar siempre el depósito de garantía en todas las compras.",
+          "timestamp": "2026-06-12T02:08:50.442Z"
+        },
+        {
+          "author": "pgp_pioneer",
+          "content": "Gracias por el reporte, es bueno saber qué árbitros son imparciales.",
+          "timestamp": "2026-06-12T02:10:30.472Z"
+        }
+      ],
+      "timestamp": "2026-06-10T23:18:56.288Z"
+    },
+    {
+      "id": 4,
+      "category": "scammers",
+      "title": "Alerta de estafa con el vendedor L33tBroker",
+      "author": "matrix_hacker",
+      "content": "Cuidado al comprarle tarjetas ISA, envía disquetes vacíos en su lugar. Ya abrí una disputa de Escrow. Manténganse alejados.",
+      "replies": [
+        {
+          "author": "matrix_hacker",
+          "content": "Qué bueno que usaste Escrow, de lo contrario habrías perdido tus USDT.",
+          "timestamp": "2026-06-10T23:25:50.573Z"
+        },
+        {
+          "author": "win98_expert",
+          "content": "Qué bueno que usaste Escrow, de lo contrario habrías perdido tus USDT.",
+          "timestamp": "2026-06-12T01:54:17.681Z"
+        },
+        {
+          "author": "pgp_guru",
+          "content": "Reporten su nodo de red para que sea bloqueado del diagnóstico.",
+          "timestamp": "2026-06-12T02:14:40.534Z"
+        },
+        {
+          "author": "irc_op",
+          "content": "Qué bueno que usaste Escrow, de lo contrario habrías perdido tus USDT.",
+          "timestamp": "2026-06-12T02:23:22.100Z"
+        },
+        {
+          "author": "amiga_fanatic",
+          "content": "Gracias por avisar. Lo añadiré a mi lista negra local.",
+          "timestamp": "2026-06-12T02:24:59.233Z"
+        }
+      ],
+      "timestamp": "2026-06-10T23:22:05.557Z"
+    }
+  ],
+  "nextThreadId": 5
+}
