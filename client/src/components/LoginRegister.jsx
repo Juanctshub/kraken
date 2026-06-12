@@ -118,10 +118,10 @@ export default function LoginRegister({ API_BASE, onAuthSuccess }) {
       onAuthSuccess(data.user);
     } catch (err) {
       console.error(err);
-      // Check if it is a connection / fetch error
-      const isConnectionError = err.message.toLowerCase().includes('fetch') || 
-                                err.message.toLowerCase().includes('network') || 
-                                err.message.toLowerCase().includes('failed to connect');
+      const isConnectionError = (err.message.toLowerCase().includes('fetch') || 
+                                 err.message.toLowerCase().includes('network') || 
+                                 err.message.toLowerCase().includes('failed to connect')) &&
+                                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
       if (isConnectionError) {
         const mockUser = {
