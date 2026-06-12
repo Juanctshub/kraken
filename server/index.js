@@ -51,6 +51,7 @@ const defaultDb = {
     transactions: [],
     reviews: [],
     threads: [],
+    pendingPurchases: [],
     nextProductId: 1,
     nextOrderId: 1,
     nextThreadId: 1
@@ -1472,8 +1473,50 @@ Instrucciones:
     return generateAiText(systemPrompt, userPrompt, "Interesante tema, gracias por compartir.");
 }
 
+function ensureDbConsistency() {
+    let changed = false;
+    db.products.forEach(p => {
+        if (!p.sold && !p.isAuction) {
+            // Check if there is an order for this product ID
+            const hasFundedOrCompletedOrder = db.orders.some(o => 
+                o.productId === p.id && 
+                (o.status === 'funded' || o.status === 'shipped' || o.status === 'completed')
+            );
+            if (hasFundedOrCompletedOrder) {
+                p.sold = true;
+                changed = true;
+                console.log(`[DB CONSISTENCY] Marcando producto ${p.id} ("${p.title}") como vendido (detectado en órdenes).`);
+            }
+        }
+    });
+    if (changed) {
+        saveDb();
+    }
+}
+
+async function generateBotInterestMessage(botUser, productTitle, otherUsername) {
+    if (!botUser) return `¡Hola! Me interesa mucho tu artículo "${productTitle}". ¿Sigue disponible? Me gustaría comprarlo por Escrow.`;
+    const memoryContext = getBotMemoryContext(botUser, otherUsername);
+    const systemPrompt = `Eres un usuario real de una comunidad retro chateando por MSN Messenger en el año 2000.
+Tu apodo/usuario es: "${botUser.username}"
+Tu biografía/personalidad es: "${botUser.profileData?.bio || ''}"
+Tu ubicación es: "${botUser.profileData?.location || ''}"
+
+${memoryContext}
+
+Instrucciones de estilo:
+1. Escribe un mensaje corto (1 o 2 oraciones) mostrando interés en comprar el producto "${productTitle}" de ${otherUsername}. Pregúntale de forma muy natural si sigue disponible y dile que te gustaría comprarlo ya mismo por Escrow.
+2. Responde en español de forma casual, informal y directa.
+3. Usa modismos de chat de MSN de los 2000 (como risas jaja, abreviaciones q, tmb, emoticonos :-P o :-D).
+4. Devuelve ÚNICAMENTE tu respuesta como texto plano, sin comillas ni aclaraciones.`;
+    const userPrompt = `Escribe un mensaje de chat mostrando interés en comprar el producto "${productTitle}".`;
+    const fallbackText = `¡Hola! Me interesa mucho tu artículo "${productTitle}". ¿Sigue disponible? Me gustaría comprarlo por Escrow.`;
+    return generateAiText(systemPrompt, userPrompt, fallbackText);
+}
+
 async function simulateBotActivity() {
     try {
+        ensureDbConsistency();
         console.log("[BOT ENGINE] Iniciando ronda de simulación de actividad...");
         const registeredBots = db.users.filter(u => botsList.some(b => b.username.toLowerCase() === u.username.toLowerCase()));
         if (registeredBots.length === 0) return;
@@ -1538,69 +1581,116 @@ async function simulateBotActivity() {
             console.log(`[BOT ENGINE] El bot comprador ${targetOrder.buyer} liberó automáticamente los fondos del pedido: ${targetOrder.id} y dejó una reseña.`);
         }
 
-        // 2. ALWAYS check for human-listed direct-sale products to purchase
+        // 2. STATEFUL BUYING CYCLE FOR HUMAN PRODUCTS
+        db.pendingPurchases = db.pendingPurchases || [];
+
+        // A) Process any pending purchases that are ready
+        const readyPurchases = db.pendingPurchases.filter(p => p.tickDelay <= 0);
+        for (const pending of readyPurchases) {
+            // Check if product is still available (exists and not sold)
+            const targetProd = db.products.find(p => p.id === pending.productId && !p.sold);
+            if (targetProd) {
+                const buyingBot = registeredBots.find(u => u.username.toLowerCase() === pending.buyer.toLowerCase());
+                if (buyingBot) {
+                    const price = parseFloat(pending.price);
+                    if (parseFloat(buyingBot.profileData.balance) < price) {
+                        botDeposit(buyingBot.username, price + 100.00);
+                    }
+
+                    buyingBot.profileData.balance = parseFloat(buyingBot.profileData.balance) - price;
+                    db.transactions.push({
+                        username: buyingBot.username,
+                        type: 'withdrawal',
+                        coin: 'USDT',
+                        amount: price,
+                        usdValue: price,
+                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                        timestamp: new Date().toISOString()
+                    });
+
+                    const newOrder = {
+                        id: 'ORD-' + (100000 + db.nextOrderId++),
+                        productId: targetProd.id,
+                        productTitle: targetProd.title,
+                        price: price,
+                        buyer: buyingBot.username,
+                        seller: targetProd.seller,
+                        coin: 'USDT',
+                        escrowMode: 'multisig',
+                        moderator: 'ArbiterNode_Kraken',
+                        status: 'funded',
+                        shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
+                        trackingNumber: null,
+                        reviewed: false,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    db.orders.push(newOrder);
+                    targetProd.sold = true;
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${buyingBot.username} concretó la compra del producto human "${targetProd.title}" de ${targetProd.seller} por $${price} USD tras período de interés`);
+
+                    // Generate dynamic MSN purchase notification
+                    const purchaseMsgText = await generateBotPurchaseMessage(buyingBot, targetProd.title, price, targetProd.seller);
+                    const newMsg = {
+                        id: db.chats.length + 1,
+                        from: buyingBot.username,
+                        to: targetProd.seller,
+                        text: purchaseMsgText,
+                        productTitle: targetProd.title,
+                        productId: targetProd.id,
+                        timestamp: new Date().toISOString()
+                    };
+                    db.chats.push(newMsg);
+                    saveDb();
+                }
+            }
+        }
+        // Remove processed ones
+        db.pendingPurchases = db.pendingPurchases.filter(p => p.tickDelay > 0);
+
+        // Decrement tickDelay for remaining pending ones
+        db.pendingPurchases.forEach(p => {
+            p.tickDelay--;
+        });
+
+        // B) Check for new interest (35% chance to start negotiation on a human product)
         const humanProducts = db.products.filter(p => 
             !p.isAuction && 
             !p.sold &&
             !botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
-            !db.orders.some(o => o.productId === p.id)
+            !db.orders.some(o => o.productId === p.id) &&
+            !db.pendingPurchases.some(pp => pp.productId === p.id)
         );
-        if (humanProducts.length > 0 && Math.random() < 0.40) {
+
+        if (humanProducts.length > 0 && Math.random() < 0.35) {
             const targetProd = humanProducts[Math.floor(Math.random() * humanProducts.length)];
             const buyingBot = registeredBots[Math.floor(Math.random() * registeredBots.length)];
-            const price = parseFloat(targetProd.price);
-
-            if (parseFloat(buyingBot.profileData.balance) < price) {
-                botDeposit(buyingBot.username, price + 100.00);
-            }
-
-            buyingBot.profileData.balance = parseFloat(buyingBot.profileData.balance) - price;
-            db.transactions.push({
-                username: buyingBot.username,
-                type: 'withdrawal',
-                coin: 'USDT',
-                amount: price,
-                usdValue: price,
-                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                timestamp: new Date().toISOString()
-            });
-
-            const newOrder = {
-                id: 'ORD-' + (100000 + db.nextOrderId++),
-                productId: targetProd.id,
-                productTitle: targetProd.title,
-                price: price,
-                buyer: buyingBot.username,
-                seller: targetProd.seller,
-                coin: 'USDT',
-                escrowMode: 'multisig',
-                moderator: 'ArbiterNode_Kraken',
-                status: 'funded',
-                shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
-                trackingNumber: null,
-                reviewed: false,
-                timestamp: new Date().toISOString()
-            };
-
-            db.orders.push(newOrder);
-            targetProd.sold = true;
-            saveDb();
-            console.log(`[BOT ENGINE] El bot ${buyingBot.username} compró automáticamente el producto human "${targetProd.title}" de ${targetProd.seller} por $${price} USD (Escrow iniciado)`);
-
-            // Generate dynamic MSN purchase notification
-            const purchaseMsgText = await generateBotPurchaseMessage(buyingBot, targetProd.title, price, targetProd.seller);
-
+            
+            // Bot sends an interest message first
+            const interestMsgText = await generateBotInterestMessage(buyingBot, targetProd.title, targetProd.seller);
             const newMsg = {
                 id: db.chats.length + 1,
                 from: buyingBot.username,
                 to: targetProd.seller,
-                text: purchaseMsgText,
+                text: interestMsgText,
                 productTitle: targetProd.title,
                 productId: targetProd.id,
                 timestamp: new Date().toISOString()
             };
             db.chats.push(newMsg);
+            
+            // Add to pendingPurchases
+            db.pendingPurchases.push({
+                productId: targetProd.id,
+                productTitle: targetProd.title,
+                price: parseFloat(targetProd.price),
+                buyer: buyingBot.username,
+                seller: targetProd.seller,
+                tickDelay: 1 // process/buy on the next simulation tick
+            });
             saveDb();
+            console.log(`[BOT ENGINE] El bot ${buyingBot.username} inició negociación por el producto human "${targetProd.title}" de ${targetProd.seller}. Compra programada.`);
         }
 
         // 3. ALWAYS check for active human auctions to bid on

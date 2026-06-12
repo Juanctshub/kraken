@@ -658,3 +658,19 @@ input:focus, select:focus, textarea:focus {
     display: none !important;
   }
 }
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.msn-toaster {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}

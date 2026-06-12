@@ -22,6 +22,19 @@ function App() {
   const [checkoutProduct, setCheckoutProduct] = useState(null);
   const [isAppShaking, setIsAppShaking] = useState(false);
   const lastMessageIdRef = useRef(0);
+  const [toasters, setToasters] = useState([]);
+  const lastOrdersRef = useRef(null);
+
+  const showToaster = (title, message, icon = '💬', playSound = true) => {
+    const id = Date.now() + Math.random();
+    setToasters(prev => [...prev, { id, title, message, icon }]);
+    if (playSound) {
+      playMsnBeep();
+    }
+    setTimeout(() => {
+      setToasters(prev => prev.filter(t => t.id !== id));
+    }, 6000);
+  };
 
   const playMsnBeep = () => {
     try {
@@ -141,6 +154,35 @@ function App() {
       const res = await fetch(`${API_BASE}/orders/${user.username}`);
       if (!res.ok) throw new Error();
       const data = await res.json();
+      
+      // Compare for notifications
+      if (lastOrdersRef.current) {
+        data.forEach(newOrder => {
+          const oldOrder = lastOrdersRef.current.find(o => o.id === newOrder.id);
+          const isUserSeller = newOrder.seller.toLowerCase() === user.username.toLowerCase();
+          
+          if (!oldOrder) {
+            // New order created!
+            if (isUserSeller) {
+              showToaster(
+                "¡Nueva Venta en Escrow! 🛒",
+                `El comprador ${newOrder.buyer} ha comprado tu artículo "${newOrder.productTitle}" por $${newOrder.price} USD.`,
+                "💰"
+              );
+            }
+          } else if (oldOrder.status !== newOrder.status) {
+            // Order status changed!
+            if (isUserSeller && newOrder.status === 'completed') {
+              showToaster(
+                "¡Fondos Liberados! ✅",
+                `Se han liberado $${newOrder.price} USD para tu producto "${newOrder.productTitle}".`,
+                "💵"
+              );
+            }
+          }
+        });
+      }
+      lastOrdersRef.current = data;
       setOrders(data);
     } catch (err) {
       console.error("Error syncing orders.");
@@ -196,9 +238,10 @@ function App() {
               if (lastMsg.text === '[ZUMBIDO]') {
                 playMsnNudgeSound();
                 setIsAppShaking(true);
+                showToaster("MSN Messenger - Zumbido 🚨", `${lastMsgFrom} te ha enviado un zumbido.`, "🚨", false);
                 setTimeout(() => setIsAppShaking(false), 800);
               } else {
-                playMsnBeep();
+                showToaster(`MSN Messenger - ${lastMsgFrom}`, lastMsg.text, "💬");
               }
             }
             lastMessageIdRef.current = lastMsg.id;
@@ -724,9 +767,61 @@ function App() {
         />
       )}
 
+      {/* MSN Toaster Container */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        {toasters.map(t => (
+          <div key={t.id} className="msn-toaster" style={{
+            width: '260px',
+            backgroundColor: '#f1f1f1',
+            border: '2px solid #032b80',
+            boxShadow: '3px 3px 6px rgba(0,0,0,0.3)',
+            fontFamily: '"MS Sans Serif", Geneva, sans-serif',
+            fontSize: '11px',
+            animation: 'slideUp 0.3s ease-out'
+          }}>
+            <div style={{
+              backgroundColor: '#032b80',
+              color: '#fff',
+              padding: '4px 8px',
+              fontWeight: 'bold',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <span>{t.title}</span>
+              <button 
+                onClick={() => setToasters(prev => prev.filter(x => x.id !== t.id))}
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  color: '#fff',
+                  cursor: 'pointer',
+                  fontSize: '9px',
+                  padding: 0
+                }}
+              >
+                X
+              </button>
+            </div>
+            <div style={{ padding: '10px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <span style={{ fontSize: '24px' }}>{t.icon}</span>
+              <div style={{ color: '#333', lineHeight: '1.4' }}>{t.message}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Forum Footer */}
       <footer className="forum-footer">
-        Derechos Reservados © 2026 KrakenMarket Inc. El uso de este sitio web implica la aceptación de los Términos de Servicio y Políticas de Escrow.
+        Derechos Reservados © 2026 KrakenMarket Inc. El uso de este sitio web implies la aceptación de los Términos de Servicio y Políticas de Escrow.
       </footer>
     </div>
   );
