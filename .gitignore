@@ -29,3 +29,5 @@ LOG_ERROR_KRAKEN.txt
 Thumbs.db
 .vscode/
 .idea/
+
+.vercel

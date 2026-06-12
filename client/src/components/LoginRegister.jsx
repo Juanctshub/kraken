@@ -118,23 +118,17 @@ export default function LoginRegister({ API_BASE, onAuthSuccess }) {
       onAuthSuccess(data.user);
     } catch (err) {
       console.error(err);
-      const isConnectionError = (err.message.toLowerCase().includes('fetch') || 
+      const isConnectionError = err.message.toLowerCase().includes('fetch') || 
                                  err.message.toLowerCase().includes('network') || 
-                                 err.message.toLowerCase().includes('failed to connect')) &&
-                                (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+                                 err.message.toLowerCase().includes('failed to connect') ||
+                                 err.message.toLowerCase().includes('load failed');
 
       if (isConnectionError) {
-        const mockUser = {
-          username: username,
-          profileData: {
-            location: location || "Madrid, España",
-            bio: bio || "Hola! Bienvenido a mi tienda.",
-            avatar: "👤",
-            storeName: `${username}'s Swap Shop`,
-            balance: 0.00
-          }
-        };
-        onAuthSuccess(mockUser);
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          setErrorMsg("Aviso de Red: El servidor local Express en el puerto 8080 no responde. Por favor, inicia el backend ejecutando 'npm start' en la carpeta server.");
+        } else {
+          setErrorMsg("Error de red: No se pudo establecer conexión con el servidor de Kraken. Por favor, comprueba tu conexión a internet o inténtalo más tarde.");
+        }
       } else {
         setErrorMsg(err.message || "Error en la autenticación.");
         // Do NOT regenerate captcha on credential mismatch so the user does not have to retype it
