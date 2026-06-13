@@ -102,19 +102,22 @@ app.use(async (req, res, next) => {
     // 1. Ensure connection is active
     await connectToMongo();
     
-    // 2. Fetch latest state from MongoDB periodically to prevent stale container caches
+    // 2. Fetch latest state from MongoDB efficiently using a version check
     if (dbCollection) {
-        const now = Date.now();
-        if (!global.lastFetchTime || (now - global.lastFetchTime > 10000)) {
-            try {
+        try {
+            const meta = await dbCollection.findOne({ _id: 'state_meta' }, { projection: { version: 1 } });
+            const remoteVersion = meta ? meta.version : 0;
+            
+            // If our local version is older than remote version, or we have no db loaded
+            if (!global.dbVersion || remoteVersion > global.dbVersion || !db.users) {
                 const doc = await dbCollection.findOne({ _id: 'state' });
                 if (doc) {
                     db = doc.data;
-                    global.lastFetchTime = now;
+                    global.dbVersion = remoteVersion;
                 }
-            } catch (err) {
-                console.error("[MONGODB] Error actualizando estado:", err.message);
             }
+        } catch (err) {
+            console.error("[MONGODB] Error actualizando estado:", err.message);
         }
     }
     
@@ -144,8 +147,11 @@ function saveDb() {
         console.warn("[MONGODB] No conectado. Ignorando guardado.");
         return;
     }
+    const currentMs = Date.now();
+    global.dbVersion = currentMs;
+    const saveOpMeta = dbCollection.updateOne({ _id: 'state_meta' }, { $set: { version: currentMs } }, { upsert: true });
     const saveOp = dbCollection.replaceOne({ _id: 'state' }, { _id: 'state', data: db }, { upsert: true });
-    savePromise = Promise.all([savePromise, saveOp])
+    savePromise = Promise.all([savePromise, saveOpMeta, saveOp])
         .then(() => { if (savePromise === saveOp) savePromise = null; })
         .catch(err => { console.error("[MONGODB] Error al guardar:", err.message); });
 }
@@ -1046,6 +1052,42 @@ const botsList = [
             bio: 'Cargando el navegador Netscape Navigator... Añorando los días de la Web 1.0.',
             avatar: '🌐',
             storeName: 'Surfer Web Directory',
+            balance: 0.00
+        }
+    },
+    {
+        username: 'silicon_valley_kid',
+        password: 'botpassword123',
+        email: 'silicon_kid@kraken.onion',
+        profileData: {
+            location: 'Palo Alto, CA',
+            bio: 'Construyendo el futuro en mi garaje con placas Celeron y mucha cafeína.',
+            avatar: '🧑‍💻',
+            storeName: 'Silicon Garage',
+            balance: 0.00
+        }
+    },
+    {
+        username: 'hardware_guru',
+        password: 'botpassword123',
+        email: 'hw_guru@kraken.onion',
+        profileData: {
+            location: 'Taipei, Taiwán',
+            bio: 'Experto en overclocking y refrigeración líquida de los 2000s.',
+            avatar: '🔧',
+            storeName: 'Guru Overclocking',
+            balance: 0.00
+        }
+    },
+    {
+        username: 'cdrom_burner',
+        password: 'botpassword123',
+        email: 'burner_master@kraken.onion',
+        profileData: {
+            location: 'Madrid, España',
+            bio: 'Grabadoras de CD a 52x, discos vírgenes y todo tipo de software shareware.',
+            avatar: '💿',
+            storeName: 'CD Burner Xpress',
             balance: 0.00
         }
     },
