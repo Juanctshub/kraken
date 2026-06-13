@@ -8,7 +8,7 @@ export default function Sidebar({ currentRoute, setCurrentRoute, user, onLogout 
     { id: 'chats', label: 'P2P MSN Messenger' },
     { id: 'forum', label: 'Foro phpBB' },
     { id: 'escrow', label: 'Registro de Compras' },
-    { id: 'sales_escrow', label: 'Registro de Ventas' },
+    { id: 'sales_escrow', label: 'Registro de Ventas (Cobros)' },
     { id: 'network', label: 'Diagnóstico de Red' },
   ];
 

@@ -102,15 +102,19 @@ app.use(async (req, res, next) => {
     // 1. Ensure connection is active
     await connectToMongo();
     
-    // 2. Fetch latest state from MongoDB on every request to prevent stale container caches
+    // 2. Fetch latest state from MongoDB periodically to prevent stale container caches
     if (dbCollection) {
-        try {
-            const doc = await dbCollection.findOne({ _id: 'state' });
-            if (doc) {
-                db = doc.data;
+        const now = Date.now();
+        if (!global.lastFetchTime || (now - global.lastFetchTime > 10000)) {
+            try {
+                const doc = await dbCollection.findOne({ _id: 'state' });
+                if (doc) {
+                    db = doc.data;
+                    global.lastFetchTime = now;
+                }
+            } catch (err) {
+                console.error("[MONGODB] Error actualizando estado:", err.message);
             }
-        } catch (err) {
-            console.error("[MONGODB] Error actualizando estado:", err.message);
         }
     }
     
@@ -1681,9 +1685,9 @@ async function simulateBotActivity() {
                         coin: 'USDT',
                         escrowMode: 'multisig',
                         moderator: 'ArbiterNode_Kraken',
-                        status: 'funded',
+                        status: 'shipped',
                         shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
-                        trackingNumber: null,
+                        trackingNumber: 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000),
                         reviewed: false,
                         timestamp: new Date().toISOString()
                     };

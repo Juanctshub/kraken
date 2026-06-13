@@ -107,18 +107,22 @@ export default function ChatCenter({
               <button 
                 onClick={() => onDeleteChat(activeConversation.sellerAlias)}
                 style={{
-                  backgroundColor: '#d32f2f',
+                  backgroundColor: '#e53935',
                   color: '#fff',
-                  border: 'none',
-                  padding: '2px 8px',
-                  fontSize: '10px',
+                  border: '1px solid #b71c1c',
+                  padding: '4px 10px',
+                  fontSize: '11px',
+                  fontWeight: 'bold',
                   cursor: 'pointer',
                   fontFamily: '"MS Sans Serif", Geneva, sans-serif',
                   boxShadow: '1px 1px 2px rgba(0,0,0,0.5)',
-                  marginRight: '6px'
+                  marginRight: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
                 }}
               >
-                Borrar Chat
+                🗑️ Borrar Chat
               </button>
             )}
           </div>
