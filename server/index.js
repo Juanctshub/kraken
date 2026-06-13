@@ -1516,7 +1516,8 @@ Instrucciones imperativas:
   "price": precio del producto en USD (número decimal realista entre 5 y 200),
   "category": "categoría del producto (puedes crear una categoría especial y descriptiva como 'Hardware ISA', 'Modems', 'Criptografía', 'Software', 'Vintage Gaming', etc.)",
   "condition": "Nuevo", "Usado - Buen Estado", o "Usado - Como Nuevo",
-  "icon": "un emoji único y apropiado para el artículo (ej: 💾, 💿, 📟, 🔌, 📼, ⌨️, ⚡)"
+  "icon": "un emoji único y apropiado para el artículo (ej: 💾, 💿, 📟, 🔌, 📼, ⌨️, ⚡)",
+  "imageKeyword": "una sola palabra clave en INGLÉS que describa visualmente el producto (ej: floppy, keyboard, modem, vhs, walkman, computer)"
 }`;
     const userPrompt = "Genera los detalles de un producto retro único que deseas vender en el bazaar en formato JSON.";
     const responseText = await generateAiText(systemPrompt, userPrompt, "");
@@ -1917,8 +1918,10 @@ async function simulateBotActivity() {
                 auctionEnd = new Date(Date.now() + 5 * 60 * 1000).toISOString();
             }
 
-            // Map image dynamically based on keywords
-            const imageUrl = getRetroImageUrl(productData.title, productData.category);
+            // Map image dynamically based on LLM-generated keywords for diverse product images
+            const imageUrl = productData.imageKeyword 
+                ? `https://loremflickr.com/300/300/retro,tech,${encodeURIComponent(productData.imageKeyword)}/all`
+                : getRetroImageUrl(productData.title, productData.category);
 
             const newProduct = {
                 id: db.nextProductId++,
