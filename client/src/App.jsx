@@ -342,6 +342,10 @@ function App() {
 
   // Initial and Polling load
   useEffect(() => {
+    // Reset order and chat refs when user changes to prevent cross-account ghost notifications
+    lastOrdersRef.current = null;
+    lastMessageIdRef.current = 0;
+
     fetchProducts();
     if (user && user.username) {
       fetchOrders();
@@ -361,7 +365,15 @@ function App() {
       }
     }, 3500);
 
-    return () => clearInterval(interval);
+    // Trigger bot simulation in the background every 30 seconds to keep bots active
+    const simInterval = setInterval(() => {
+      fetch(`${API_BASE}/bots/simulate`, { method: 'POST' }).catch(() => {});
+    }, 30000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(simInterval);
+    };
   }, [user]);
 
   // Auth handler
@@ -476,7 +488,22 @@ function App() {
       });
 
       if (!res.ok) throw new Error();
-      fetchChats(); // refresh messages
+      await fetchChats(); // refresh messages
+
+      // Trigger bot quick chat simulation to get snappy real-time responses
+      setTimeout(async () => {
+        try {
+          await fetch(`${API_BASE}/bots/simulate?chatsOnly=true`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chatsOnly: true })
+          });
+          await fetchChats(); // refresh again to get bot reply
+        } catch (e) {
+          console.error("Error triggering quick chat simulation:", e);
+        }
+      }, 500);
+
     } catch (err) {
       alert("Error al enviar mensaje al servidor.");
     }

@@ -98,26 +98,38 @@ async function connectToMongo() {
 }
 
 // Database connection and state synchronizer middleware
+let lastSyncTime = 0;
+const SYNC_INTERVAL_MS = 1000; // Check remote version at most once per second for GET requests
+
 app.use(async (req, res, next) => {
     // 1. Ensure connection is active
     await connectToMongo();
     
     // 2. Fetch latest state from MongoDB efficiently using a version check
     if (dbCollection) {
-        try {
-            const meta = await dbCollection.findOne({ _id: 'state_meta' }, { projection: { version: 1 } });
-            const remoteVersion = meta ? meta.version : 0;
-            
-            // If our local version is older than remote version, or we have no db loaded
-            if (!global.dbVersion || remoteVersion > global.dbVersion || !db.users) {
-                const doc = await dbCollection.findOne({ _id: 'state' });
-                if (doc) {
-                    db = doc.data;
-                    global.dbVersion = remoteVersion;
+        const now = Date.now();
+        // Force sync for write requests (POST, PUT, DELETE) or if interval elapsed or if DB state not loaded yet
+        const shouldSync = (req.method !== 'GET') || (now - lastSyncTime > SYNC_INTERVAL_MS) || !global.dbVersion || !db.users;
+        
+        if (shouldSync) {
+            try {
+                const meta = await dbCollection.findOne({ _id: 'state_meta' }, { projection: { version: 1 } });
+                const remoteVersion = meta ? meta.version : 0;
+                
+                // If our local version is older than remote version, or we have no db loaded
+                if (!global.dbVersion || remoteVersion > global.dbVersion || !db.users) {
+                    const doc = await dbCollection.findOne({ _id: 'state' });
+                    if (doc) {
+                        db = doc.data;
+                        global.dbVersion = remoteVersion;
+                    }
                 }
+                if (req.method === 'GET') {
+                    lastSyncTime = now;
+                }
+            } catch (err) {
+                console.error("[MONGODB] Error actualizando estado:", err.message);
             }
-        } catch (err) {
-            console.error("[MONGODB] Error actualizando estado:", err.message);
         }
     }
     
@@ -125,7 +137,9 @@ app.use(async (req, res, next) => {
     const originalSend = res.send;
     res.send = async function (body) {
         if (savePromise) {
-            await savePromise;
+            try {
+                await savePromise;
+            } catch (err) {}
         }
         return originalSend.call(this, body);
     };
@@ -133,7 +147,9 @@ app.use(async (req, res, next) => {
     const originalJson = res.json;
     res.json = async function (body) {
         if (savePromise) {
-            await savePromise;
+            try {
+                await savePromise;
+            } catch (err) {}
         }
         return originalJson.call(this, body);
     };
@@ -151,9 +167,20 @@ function saveDb() {
     global.dbVersion = currentMs;
     const saveOpMeta = dbCollection.updateOne({ _id: 'state_meta' }, { $set: { version: currentMs } }, { upsert: true });
     const saveOp = dbCollection.replaceOne({ _id: 'state' }, { _id: 'state', data: db }, { upsert: true });
-    savePromise = Promise.all([savePromise, saveOpMeta, saveOp])
-        .then(() => { if (savePromise === saveOp) savePromise = null; })
-        .catch(err => { console.error("[MONGODB] Error al guardar:", err.message); });
+    
+    const thisSavePromise = Promise.all([saveOpMeta, saveOp]);
+    savePromise = thisSavePromise
+        .then(() => {
+            if (savePromise === thisSavePromise) {
+                savePromise = null;
+            }
+        })
+        .catch(err => {
+            console.error("[MONGODB] Error al guardar:", err.message);
+            if (savePromise === thisSavePromise) {
+                savePromise = null;
+            }
+        });
 }
 
 // =========================================================================
@@ -809,33 +836,6 @@ app.post('/api/chats', (req, res) => {
     db.chats.push(newMsg);
     saveDb();
 
-    // Check if recipient is a bot to auto-respond
-    const isBotRecipient = botsList.some(b => b.username.toLowerCase() === to.toLowerCase());
-    if (isBotRecipient) {
-        const botUser = botsList.find(b => b.username.toLowerCase() === to.toLowerCase());
-        
-        generateGroqResponse(botUser, text, productTitle, from)
-            .then(botAnswerText => {
-                setTimeout(() => {
-                    const botMsg = {
-                        id: db.chats.length + 1,
-                        from: to, // the bot
-                        to: from, // the human
-                        text: botAnswerText,
-                        productTitle: productTitle || null,
-                        productId: productId || null,
-                        timestamp: new Date().toISOString()
-                    };
-                    db.chats.push(botMsg);
-                    saveDb();
-                    console.log(`[BOT ENGINE] Respuesta automática del bot ${to} a ${from}: "${botAnswerText}"`);
-                }, 3000);
-            })
-            .catch(err => {
-                console.error(`[BOT ENGINE] Error al generar respuesta del bot ${to}:`, err);
-            });
-    }
-
     res.status(201).json(newMsg);
 });
 
@@ -1450,40 +1450,85 @@ Instrucciones de estilo:
 // RETRO TECH DYNAMIC IMAGE RESOLVER
 // =========================================================================
 const retroImages = {
-    computer: "https://images.unsplash.com/photo-1551645121-d1034da75057?w=300&auto=format&fit=crop",
-    disk: "https://images.unsplash.com/photo-1599666505327-7758b44a9985?w=300&auto=format&fit=crop",
-    keyboard: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=300&auto=format&fit=crop",
-    tape: "https://images.unsplash.com/photo-1532244769018-9b3484f762f9?w=300&auto=format&fit=crop",
-    gamepad: "https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?w=300&auto=format&fit=crop",
-    circuit: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&auto=format&fit=crop",
-    phone: "https://images.unsplash.com/photo-1520923642038-b4a53cb6ca68?w=300&auto=format&fit=crop",
-    mouse: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=300&auto=format&fit=crop",
-    monitor: "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=300&auto=format&fit=crop",
-    generic: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=300&auto=format&fit=crop"
+    computer: [
+        "https://images.unsplash.com/photo-1551645121-d1034da75057?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1527689368864-3a821dbccc34?w=400&auto=format&fit=crop"
+    ],
+    disk: [
+        "https://images.unsplash.com/photo-1599666505327-7758b44a9985?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1544077960-604201fe74bc?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1618609378039-b572f64c5b42?w=400&auto=format&fit=crop"
+    ],
+    keyboard: [
+        "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1595225476474-87563907a212?w=400&auto=format&fit=crop"
+    ],
+    tape: [
+        "https://images.unsplash.com/photo-1532244769018-9b3484f762f9?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1532722341075-5a6cd4011a7f?w=400&auto=format&fit=crop"
+    ],
+    gamepad: [
+        "https://images.unsplash.com/photo-1531525645387-7f14be1bdbbd?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1592478411213-6153e4ebc07d?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1580234810907-b40315b76418?w=400&auto=format&fit=crop"
+    ],
+    circuit: [
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1601342671927-466d790757d5?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=400&auto=format&fit=crop"
+    ],
+    phone: [
+        "https://images.unsplash.com/photo-1520923642038-b4a53cb6ca68?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1563206767-5b18f218e8de?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&auto=format&fit=crop"
+    ],
+    mouse: [
+        "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&auto=format&fit=crop"
+    ],
+    monitor: [
+        "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1551645121-d1034da75057?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&auto=format&fit=crop"
+    ],
+    generic: [
+        "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&auto=format&fit=crop"
+    ]
 };
 
-function getRetroImageUrl(title, category) {
-    const text = ((title || "") + " " + (category || "")).toLowerCase();
+function getRetroImageUrl(title, category, imageKeyword) {
+    const text = ((title || "") + " " + (category || "") + " " + (imageKeyword || "")).toLowerCase();
+    let key = "generic";
     if (text.includes("disquete") || text.includes("disk") || text.includes("zip") || text.includes("floppy")) {
-        return retroImages.disk;
+        key = "disk";
     } else if (text.includes("teclado") || text.includes("keyboard") || text.includes("ibm model")) {
-        return retroImages.keyboard;
-    } else if (text.includes("auriculares") || text.includes("casete") || text.includes("tape") || text.includes("cinta") || text.includes("sound blaster")) {
-        return retroImages.tape;
-    } else if (text.includes("voodoo") || text.includes("tarjeta") || text.includes("procesador") || text.includes("slot") || text.includes("motherboard") || text.includes("card") || text.includes("isa") || text.includes("pci")) {
-        return retroImages.circuit;
-    } else if (text.includes("game") || text.includes("playstation") || text.includes("atari") || text.includes("nintendo") || text.includes("joystick") || text.includes("juego")) {
-        return retroImages.gamepad;
+        key = "keyboard";
+    } else if (text.includes("auriculares") || text.includes("casete") || text.includes("tape") || text.includes("cinta") || text.includes("sound blaster") || text.includes("vhs") || text.includes("walkman")) {
+        key = "tape";
+    } else if (text.includes("voodoo") || text.includes("tarjeta") || text.includes("procesador") || text.includes("slot") || text.includes("motherboard") || text.includes("card") || text.includes("isa") || text.includes("pci") || text.includes("circuit") || text.includes("hardware")) {
+        key = "circuit";
+    } else if (text.includes("game") || text.includes("playstation") || text.includes("atari") || text.includes("nintendo") || text.includes("joystick") || text.includes("juego") || text.includes("gamepad")) {
+        key = "gamepad";
     } else if (text.includes("módem") || text.includes("modem") || text.includes("teléfono") || text.includes("phone")) {
-        return retroImages.phone;
+        key = "phone";
     } else if (text.includes("mouse") || text.includes("ratón")) {
-        return retroImages.mouse;
+        key = "mouse";
     } else if (text.includes("monitor") || text.includes("pantalla") || text.includes("crt") || text.includes("tv")) {
-        return retroImages.monitor;
-    } else if (text.includes("computadora") || text.includes("pc") || text.includes("ordenador")) {
-        return retroImages.computer;
+        key = "monitor";
+    } else if (text.includes("computadora") || text.includes("pc") || text.includes("ordenador") || text.includes("computer")) {
+        key = "computer";
     }
-    return retroImages.generic;
+    
+    const arr = retroImages[key] || retroImages.generic;
+    return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function parseJsonFromLlm(text) {
@@ -1606,474 +1651,40 @@ Instrucciones de estilo:
     return generateAiText(systemPrompt, userPrompt, fallbackText);
 }
 
-async function simulateBotActivity() {
+async function simulateBotActivity(chatsOnly = false) {
     try {
         ensureDbConsistency();
-        console.log("[BOT ENGINE] Iniciando ronda de simulación de actividad...");
+        console.log(`[BOT ENGINE] Iniciando ronda de simulación de actividad (chatsOnly: ${chatsOnly})...`);
         const registeredBots = db.users.filter(u => botsList.some(b => b.username.toLowerCase() === u.username.toLowerCase()));
         if (registeredBots.length === 0) return;
-        const botUser = registeredBots[Math.floor(Math.random() * registeredBots.length)];
 
-        // 0. Auto-advance orders where a human seller has a funded order from a bot buyer:
-        const fundedOrdersWithBotBuyerAndHumanSeller = db.orders.filter(o => 
-            o.status === 'funded' && 
-            botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase()) &&
-            !botsList.some(b => b.username.toLowerCase() === o.seller.toLowerCase())
-        );
-        for (const order of fundedOrdersWithBotBuyerAndHumanSeller) {
-            order.status = 'shipped';
-            order.trackingNumber = 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000);
-            saveDb();
-            console.log(`[BOT ENGINE] Envío automático registrado para el pedido del human: ${order.id}`);
-        }
+        // Track LLM call budget for this simulation tick to avoid timeouts and rate-limiting
+        let llmCallsThisTick = 0;
+        const MAX_LLM_CALLS_PER_TICK = chatsOnly ? 5 : 2;
 
-        // 1. ALWAYS auto-advance any orders that are in 'shipped' state where the buyer is a bot:
-        const shippedOrdersWithBotBuyer = db.orders.filter(o => 
-            o.status === 'shipped' && 
-            botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase())
-        );
-        for (const targetOrder of shippedOrdersWithBotBuyer) {
-            targetOrder.status = 'completed';
-            
-            // Release funds to seller (minus 5% tax/fee)
-            const sellerUser = db.users.find(u => u.username.toLowerCase() === targetOrder.seller.toLowerCase());
-            if (sellerUser) {
-                const feeRate = 0.05; // 5% marketplace commission
-                const priceVal = parseFloat(targetOrder.price);
-                const feeVal = priceVal * feeRate;
-                const netAmount = priceVal - feeVal;
-
-                sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
-                db.transactions.push({
-                    username: sellerUser.username,
-                    type: 'deposit',
-                    coin: targetOrder.coin,
-                    amount: netAmount,
-                    usdValue: netAmount,
-                    txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                    timestamp: new Date().toISOString()
-                });
-            }
-            
-            const buyerBot = botsList.find(b => b.username.toLowerCase() === targetOrder.buyer.toLowerCase());
-            
-            // Generate dynamic 5-star review comment
-            const reviewComment = await generateBotReviewComment(buyerBot, targetOrder.productTitle, targetOrder.seller);
-            
-            // Bot buyer leaves review automatically
-            const botReview = {
-                id: db.reviews.length + 1,
-                orderId: targetOrder.id,
-                rating: 5,
-                comment: reviewComment,
-                fromUser: targetOrder.buyer,
-                toUser: targetOrder.seller,
-                timestamp: new Date().toISOString()
-            };
-            db.reviews.push(botReview);
-            targetOrder.reviewed = true;
-            
-            // Generate dynamic MSN thank-you message
-            const thankYouMessage = await generateBotCompletionMessage(buyerBot, targetOrder.productTitle, targetOrder.seller);
-            
-            // Send MSN message to thank the human seller
-            const newMsg = {
-                id: db.chats.length + 1,
-                from: targetOrder.buyer,
-                to: targetOrder.seller,
-                text: thankYouMessage,
-                productTitle: targetOrder.productTitle,
-                productId: targetOrder.productId,
-                timestamp: new Date().toISOString()
-            };
-            db.chats.push(newMsg);
-            saveDb();
-            console.log(`[BOT ENGINE] El bot comprador ${targetOrder.buyer} liberó automáticamente los fondos del pedido: ${targetOrder.id} y dejó una reseña.`);
-        }
-
-        // 2. STATEFUL BUYING CYCLE FOR HUMAN PRODUCTS
-        db.pendingPurchases = db.pendingPurchases || [];
-
-        // A) Process any pending purchases that are ready
-        const readyPurchases = db.pendingPurchases.filter(p => p.tickDelay <= 0);
-        for (const pending of readyPurchases) {
-            // Check if product is still available (exists and not sold)
-            const targetProd = db.products.find(p => p.id === pending.productId && !p.sold);
-            if (targetProd) {
-                const buyingBot = registeredBots.find(u => u.username.toLowerCase() === pending.buyer.toLowerCase());
-                if (buyingBot) {
-                    const price = parseFloat(pending.price);
-                    if (parseFloat(buyingBot.profileData.balance) < price) {
-                        botDeposit(buyingBot.username, price + 100.00);
-                    }
-
-                    buyingBot.profileData.balance = parseFloat(buyingBot.profileData.balance) - price;
-                    db.transactions.push({
-                        username: buyingBot.username,
-                        type: 'withdrawal',
-                        coin: 'USDT',
-                        amount: price,
-                        usdValue: price,
-                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                        timestamp: new Date().toISOString()
-                    });
-
-                    const newOrder = {
-                        id: 'ORD-' + (100000 + db.nextOrderId++),
-                        productId: targetProd.id,
-                        productTitle: targetProd.title,
-                        price: price,
-                        buyer: buyingBot.username,
-                        seller: targetProd.seller,
-                        coin: 'USDT',
-                        escrowMode: 'multisig',
-                        moderator: 'ArbiterNode_Kraken',
-                        status: 'shipped',
-                        shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
-                        trackingNumber: 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000),
-                        reviewed: false,
-                        timestamp: new Date().toISOString()
-                    };
-
-                    db.orders.push(newOrder);
-                    targetProd.sold = true;
-                    saveDb();
-                    console.log(`[BOT ENGINE] El bot ${buyingBot.username} concretó la compra del producto human "${targetProd.title}" de ${targetProd.seller} por $${price} USD tras período de interés`);
-
-                    // Generate dynamic MSN purchase notification
-                    const purchaseMsgText = await generateBotPurchaseMessage(buyingBot, targetProd.title, price, targetProd.seller);
-                    const newMsg = {
-                        id: db.chats.length + 1,
-                        from: buyingBot.username,
-                        to: targetProd.seller,
-                        text: purchaseMsgText,
-                        productTitle: targetProd.title,
-                        productId: targetProd.id,
-                        timestamp: new Date().toISOString()
-                    };
-                    db.chats.push(newMsg);
-                    saveDb();
-                }
-            }
-        }
-        // Remove processed ones
-        db.pendingPurchases = db.pendingPurchases.filter(p => p.tickDelay > 0);
-
-        // Decrement tickDelay for remaining pending ones
-        db.pendingPurchases.forEach(p => {
-            p.tickDelay--;
-        });
-
-        // B) Check for new interest (35% chance to start negotiation on a human product)
-        const humanProducts = db.products.filter(p => 
-            !p.isAuction && 
-            !p.sold &&
-            !botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
-            !db.orders.some(o => o.productId === p.id) &&
-            !db.pendingPurchases.some(pp => pp.productId === p.id)
-        );
-
-        if (humanProducts.length > 0 && Math.random() < 0.35) {
-            const targetProd = humanProducts[Math.floor(Math.random() * humanProducts.length)];
-            const buyingBot = registeredBots[Math.floor(Math.random() * registeredBots.length)];
-            
-            // Bot sends an interest message first
-            const interestMsgText = await generateBotInterestMessage(buyingBot, targetProd.title, targetProd.seller);
-            const newMsg = {
-                id: db.chats.length + 1,
-                from: buyingBot.username,
-                to: targetProd.seller,
-                text: interestMsgText,
-                productTitle: targetProd.title,
-                productId: targetProd.id,
-                timestamp: new Date().toISOString()
-            };
-            db.chats.push(newMsg);
-            
-            // Add to pendingPurchases
-            db.pendingPurchases.push({
-                productId: targetProd.id,
-                productTitle: targetProd.title,
-                price: parseFloat(targetProd.price),
-                buyer: buyingBot.username,
-                seller: targetProd.seller,
-                tickDelay: 1 // process/buy on the next simulation tick
-            });
-            saveDb();
-            console.log(`[BOT ENGINE] El bot ${buyingBot.username} inició negociación por el producto human "${targetProd.title}" de ${targetProd.seller}. Compra programada.`);
-        }
-
-        // 3. ALWAYS check for active human auctions to bid on
-        const humanAuctions = db.products.filter(p => 
-            p.isAuction && 
-            !p.auctionFinalized && 
-            !botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
-            (p.auctionEnd && new Date(p.auctionEnd) > new Date())
-        );
-        if (humanAuctions.length > 0 && Math.random() < 0.40) {
-            const targetAuction = humanAuctions[Math.floor(Math.random() * humanAuctions.length)];
-            const biddingBot = registeredBots.find(b => b.username !== targetAuction.highestBidder);
-            if (biddingBot) {
-                const minBid = targetAuction.highestBidder ? targetAuction.price + 5.00 : targetAuction.price;
-                
-                if (parseFloat(biddingBot.profileData.balance) < minBid) {
-                    botDeposit(biddingBot.username, minBid + 100.00);
-                }
-
-                if (targetAuction.highestBidder) {
-                    const prevBidder = db.users.find(u => u.username.toLowerCase() === targetAuction.highestBidder.toLowerCase());
-                    if (prevBidder) {
-                        prevBidder.profileData.balance = parseFloat(prevBidder.profileData.balance) + parseFloat(targetAuction.price);
-                        db.transactions.push({
-                            username: prevBidder.username,
-                            type: 'deposit',
-                            coin: 'USDT',
-                            amount: targetAuction.price,
-                            usdValue: targetAuction.price,
-                            txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                            timestamp: new Date().toISOString()
-                        });
-                    }
-                }
-
-                biddingBot.profileData.balance = parseFloat(biddingBot.profileData.balance) - minBid;
-                db.transactions.push({
-                    username: biddingBot.username,
-                    type: 'withdrawal',
-                    coin: 'USDT',
-                    amount: minBid,
-                    usdValue: minBid,
-                    txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                    timestamp: new Date().toISOString()
-                });
-
-                targetAuction.price = minBid;
-                targetAuction.highestBidder = biddingBot.username;
-                saveDb();
-                console.log(`[BOT ENGINE] El bot ${biddingBot.username} pujó automáticamente $${minBid} USD en la subasta del human: ${targetAuction.title}`);
-            }
-        }
-
-        // 3.5 Proactive question from bot to human seller
-        if (humanProducts.length > 0 && Math.random() < 0.30) {
-            const targetProd = humanProducts[Math.floor(Math.random() * humanProducts.length)];
-            const botUser = registeredBots[Math.floor(Math.random() * registeredBots.length)];
-            
-            const chatExists = db.chats.some(c => 
-                c.from.toLowerCase() === botUser.username.toLowerCase() && 
-                c.to.toLowerCase() === targetProd.seller.toLowerCase() &&
-                c.productId === targetProd.id
+        if (!chatsOnly) {
+            // 0. Auto-advance orders where a human seller has a funded order from a bot buyer:
+            const fundedOrdersWithBotBuyerAndHumanSeller = db.orders.filter(o => 
+                o.status === 'funded' && 
+                botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase()) &&
+                !botsList.some(b => b.username.toLowerCase() === o.seller.toLowerCase())
             );
-            
-            if (!chatExists) {
-                const proactiveText = await generateBotProactiveMessage(botUser, targetProd.title, targetProd.seller);
-                
-                const newMsg = {
-                    id: db.chats.length + 1,
-                    from: botUser.username,
-                    to: targetProd.seller,
-                    text: proactiveText,
-                    productTitle: targetProd.title,
-                    productId: targetProd.id,
-                    timestamp: new Date().toISOString()
-                };
-                db.chats.push(newMsg);
+            for (const order of fundedOrdersWithBotBuyerAndHumanSeller) {
+                order.status = 'shipped';
+                order.trackingNumber = 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000);
                 saveDb();
-                console.log(`[BOT ENGINE] El bot ${botUser.username} le envió una pregunta al humano ${targetProd.seller} sobre "${targetProd.title}": "${proactiveText}"`);
-            }
-        }
-
-        // 4. Run background simulation action
-        const randomAction = Math.floor(Math.random() * 5); // 0 to 4
-        
-        if (randomAction === 0) {
-            const isAuction = Math.random() > 0.5;
-            let productData = null;
-            
-            try {
-                // Call LLM to generate dynamic product
-                productData = await generateBotProduct(botUser);
-            } catch (err) {
-                console.error("[BOT ENGINE] Error generating AI product, using template:", err.message);
-            }
-            
-            // Fallback to static pool if LLM failed or parsed invalid
-            if (!productData) {
-                const randomProd = botProductPool[Math.floor(Math.random() * botProductPool.length)];
-                productData = {
-                    title: randomProd.title,
-                    desc: randomProd.desc,
-                    price: randomProd.price,
-                    category: isAuction ? 'Subastas' : 'Electronics',
-                    condition: randomProd.condition,
-                    icon: randomProd.icon
-                };
+                console.log(`[BOT ENGINE] Envío automático registrado para el pedido del human: ${order.id}`);
             }
 
-            const alreadyListed = db.products.some(p => p.title === productData.title && p.seller === botUser.username);
-            if (alreadyListed) return;
-
-            let auctionEnd = null;
-            if (isAuction) {
-                auctionEnd = new Date(Date.now() + 5 * 60 * 1000).toISOString();
-            }
-
-            // Map image dynamically based on LLM-generated keywords for diverse product images
-            const imageUrl = productData.imageKeyword 
-                ? `https://loremflickr.com/300/300/retro,tech,${encodeURIComponent(productData.imageKeyword)}/all`
-                : getRetroImageUrl(productData.title, productData.category);
-
-            const newProduct = {
-                id: db.nextProductId++,
-                title: productData.title,
-                description: productData.desc,
-                price: productData.price,
-                seller: botUser.username,
-                category: isAuction ? 'Subastas' : (productData.category || 'Electronics'),
-                condition: productData.condition || 'Usado - Buen Estado',
-                icon: productData.icon || '📦',
-                location: botUser.profileData.location,
-                image: imageUrl,
-                isAuction: isAuction,
-                auctionEnd: auctionEnd,
-                auctionFinalized: false,
-                highestBidder: null,
-                timestamp: new Date().toISOString()
-            };
-
-            db.products.push(newProduct);
-            saveDb();
-            console.log(`[BOT ENGINE] El bot ${botUser.username} publicó un producto dinámico: ${newProduct.title} en categoría "${newProduct.category}" (${isAuction ? 'Subasta' : 'Venta directa'})`);
-            
-        } else if (randomAction === 1) {
-            const activeAuctions = db.products.filter(p => p.isAuction && !p.auctionFinalized && p.seller !== botUser.username && p.highestBidder !== botUser.username && (p.auctionEnd && new Date(p.auctionEnd) > new Date()));
-            if (activeAuctions.length === 0) return;
-
-            const targetAuction = activeAuctions[Math.floor(Math.random() * activeAuctions.length)];
-            const minBid = targetAuction.highestBidder ? targetAuction.price + 1.00 : targetAuction.price;
-            
-            if (parseFloat(botUser.profileData.balance) < minBid) {
-                const depositAmount = minBid + 100.00;
-                botDeposit(botUser.username, depositAmount);
-            }
-
-            if (targetAuction.highestBidder) {
-                const prevBidder = db.users.find(u => u.username.toLowerCase() === targetAuction.highestBidder.toLowerCase());
-                if (prevBidder) {
-                    prevBidder.profileData.balance = parseFloat(prevBidder.profileData.balance) + parseFloat(targetAuction.price);
-                    db.transactions.push({
-                        username: prevBidder.username,
-                        type: 'deposit',
-                        coin: 'USDT',
-                        amount: targetAuction.price,
-                        usdValue: targetAuction.price,
-                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                        timestamp: new Date().toISOString()
-                    });
-                }
-            }
-
-            botUser.profileData.balance = parseFloat(botUser.profileData.balance) - minBid;
-            db.transactions.push({
-                username: botUser.username,
-                type: 'withdrawal',
-                coin: 'USDT',
-                amount: minBid,
-                usdValue: minBid,
-                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                timestamp: new Date().toISOString()
-            });
-
-            targetAuction.price = minBid;
-            targetAuction.highestBidder = botUser.username;
-            saveDb();
-            console.log(`[BOT ENGINE] El bot ${botUser.username} pujó $${minBid} USD en la subasta: ${targetAuction.title}`);
-
-        } else if (randomAction === 2) {
-            const writeNewThread = Math.random() > 0.5;
-            db.threads = db.threads || [];
-            
-            if (writeNewThread || db.threads.length === 0) {
-                let threadData = null;
-                try {
-                    threadData = await generateBotForumThread(botUser);
-                } catch (err) {
-                    console.error("[BOT ENGINE] Error generating AI forum thread:", err.message);
-                }
-                
-                if (!threadData) {
-                    const template = botForumThreads[Math.floor(Math.random() * botForumThreads.length)];
-                    threadData = {
-                        category: template.category,
-                        title: template.title,
-                        content: template.content
-                    };
-                }
-                
-                const alreadyExists = db.threads.some(t => t.title === threadData.title);
-                if (alreadyExists) return;
-
-                const newThread = {
-                    id: db.nextThreadId++,
-                    category: threadData.category || 'security',
-                    title: threadData.title,
-                    author: botUser.username,
-                    content: threadData.content,
-                    replies: [],
-                    timestamp: new Date().toISOString()
-                };
-                db.threads.push(newThread);
-                saveDb();
-                console.log(`[BOT ENGINE] El bot ${botUser.username} creó un nuevo hilo dinámico en el foro: "${newThread.title}"`);
-            } else {
-                const targetThread = db.threads[Math.floor(Math.random() * db.threads.length)];
-                let replyContent = null;
-                
-                try {
-                    replyContent = await generateBotForumReply(botUser, targetThread);
-                } catch (err) {
-                    console.error("[BOT ENGINE] Error generating AI forum reply:", err.message);
-                }
-                
-                if (!replyContent) {
-                    const replyPool = botForumReplies.find(r => r.category === targetThread.category);
-                    if (replyPool) {
-                        replyContent = replyPool.replies[Math.floor(Math.random() * replyPool.replies.length)];
-                    } else {
-                        replyContent = "Interesante tema, gracias por compartir.";
-                    }
-                }
-                
-                const newReply = {
-                    author: botUser.username,
-                    content: replyContent,
-                    timestamp: new Date().toISOString()
-                };
-                targetThread.replies = targetThread.replies || [];
-                targetThread.replies.push(newReply);
-                saveDb();
-                console.log(`[BOT ENGINE] El bot ${botUser.username} respondió dinámicamente en el hilo: "${targetThread.title}"`);
-            }
-
-        } else if (randomAction === 3) {
-            const activeOrders = db.orders.filter(o => 
-                o.status !== 'completed' && 
-                (botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase()) || 
-                 botsList.some(b => b.username.toLowerCase() === o.seller.toLowerCase()))
+            // 1. ALWAYS auto-advance any orders that are in 'shipped' state where the buyer is a bot:
+            const shippedOrdersWithBotBuyer = db.orders.filter(o => 
+                o.status === 'shipped' && 
+                botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase())
             );
-            if (activeOrders.length === 0) return;
-
-            const targetOrder = activeOrders[Math.floor(Math.random() * activeOrders.length)];
-            const isBotSeller = botsList.some(b => b.username.toLowerCase() === targetOrder.seller.toLowerCase());
-            
-            if (targetOrder.status === 'funded' && isBotSeller) {
-                targetOrder.status = 'shipped';
-                targetOrder.trackingNumber = 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000);
-                saveDb();
-                console.log(`[BOT ENGINE] El bot vendedor ${targetOrder.seller} registró el envío para el pedido: ${targetOrder.id}`);
-            } else if (targetOrder.status === 'shipped' && !isBotSeller) {
+            for (const targetOrder of shippedOrdersWithBotBuyer) {
                 targetOrder.status = 'completed';
                 
+                // Release funds to seller (minus 5% tax/fee)
                 const sellerUser = db.users.find(u => u.username.toLowerCase() === targetOrder.seller.toLowerCase());
                 if (sellerUser) {
                     const feeRate = 0.05; // 5% marketplace commission
@@ -2095,10 +1706,9 @@ async function simulateBotActivity() {
                 
                 const buyerBot = botsList.find(b => b.username.toLowerCase() === targetOrder.buyer.toLowerCase());
                 
-                // Generate dynamic AI comment and MSN message
+                // Generate dynamic review comment using helper
                 const reviewComment = await generateBotReviewComment(buyerBot, targetOrder.productTitle, targetOrder.seller);
-                const thankYouMessage = await generateBotCompletionMessage(buyerBot, targetOrder.productTitle, targetOrder.seller);
-
+                
                 // Bot buyer leaves review automatically
                 const botReview = {
                     id: db.reviews.length + 1,
@@ -2112,9 +1722,9 @@ async function simulateBotActivity() {
                 db.reviews.push(botReview);
                 targetOrder.reviewed = true;
                 
-                saveDb();
-                console.log(`[BOT ENGINE] El bot comprador ${targetOrder.buyer} liberó los fondos del pedido: ${targetOrder.id} y dejó una reseña.`);
-
+                // Generate dynamic thank-you message using helper
+                const thankYouMessage = await generateBotCompletionMessage(buyerBot, targetOrder.productTitle, targetOrder.seller);
+                
                 // Send MSN message to thank the human seller
                 const newMsg = {
                     id: db.chats.length + 1,
@@ -2127,62 +1737,602 @@ async function simulateBotActivity() {
                 };
                 db.chats.push(newMsg);
                 saveDb();
-            }
-        } else if (randomAction === 4) {
-            // Find products listed by bot users that are direct sales
-            const botProducts = db.products.filter(p => 
-                !p.isAuction && 
-                !p.sold &&
-                botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
-                !db.orders.some(o => o.productId === p.id)
-            );
-            if (botProducts.length === 0) return;
-
-            const targetProd = botProducts[Math.floor(Math.random() * botProducts.length)];
-            const price = parseFloat(targetProd.price);
-
-            // Ensure bot has balance, deposit if not
-            if (parseFloat(botUser.profileData.balance) < price) {
-                const depositAmount = price + 100.00;
-                botDeposit(botUser.username, depositAmount);
+                console.log(`[BOT ENGINE] El bot comprador ${targetOrder.buyer} liberó automáticamente los fondos del pedido: ${targetOrder.id} y dejó una reseña.`);
             }
 
-            // Deduct balance
-            botUser.profileData.balance = parseFloat(botUser.profileData.balance) - price;
-            
-            // Log crypto withdrawal
-            db.transactions.push({
-                username: botUser.username,
-                type: 'withdrawal',
-                coin: 'USDT',
-                amount: price,
-                usdValue: price,
-                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
-                timestamp: new Date().toISOString()
+            // 2. STATEFUL BUYING CYCLE FOR HUMAN PRODUCTS
+            db.pendingPurchases = db.pendingPurchases || [];
+
+            // A) Process any pending purchases that are ready
+            const readyPurchases = db.pendingPurchases.filter(p => p.tickDelay <= 0);
+            for (const pending of readyPurchases) {
+                // Check if product is still available (exists and not sold)
+                const targetProd = db.products.find(p => p.id === pending.productId && !p.sold);
+                if (targetProd) {
+                    const buyingBot = registeredBots.find(u => u.username.toLowerCase() === pending.buyer.toLowerCase());
+                    if (buyingBot) {
+                        const price = parseFloat(pending.price);
+                        if (parseFloat(buyingBot.profileData.balance) < price) {
+                            botDeposit(buyingBot.username, price + 100.00);
+                        }
+
+                        buyingBot.profileData.balance = parseFloat(buyingBot.profileData.balance) - price;
+                        db.transactions.push({
+                            username: buyingBot.username,
+                            type: 'withdrawal',
+                            coin: 'USDT',
+                            amount: price,
+                            usdValue: price,
+                            txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                            timestamp: new Date().toISOString()
+                        });
+
+                        const newOrder = {
+                            id: 'ORD-' + (100000 + db.nextOrderId++),
+                            productId: targetProd.id,
+                            productTitle: targetProd.title,
+                            price: price,
+                            buyer: buyingBot.username,
+                            seller: targetProd.seller,
+                            coin: 'USDT',
+                            escrowMode: 'multisig',
+                            moderator: 'ArbiterNode_Kraken',
+                            status: 'shipped',
+                            shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
+                            trackingNumber: 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000),
+                            reviewed: false,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        db.orders.push(newOrder);
+                        targetProd.sold = true;
+                        saveDb();
+                        console.log(`[BOT ENGINE] El bot ${buyingBot.username} concretó la compra del producto human "${targetProd.title}" de ${targetProd.seller} por $${price} USD tras período de interés`);
+
+                        // Generate purchase message using helper
+                        const purchaseMsgText = await generateBotPurchaseMessage(buyingBot, targetProd.title, price, targetProd.seller);
+                        const newMsg = {
+                            id: db.chats.length + 1,
+                            from: buyingBot.username,
+                            to: targetProd.seller,
+                            text: purchaseMsgText,
+                            productTitle: targetProd.title,
+                            productId: targetProd.id,
+                            timestamp: new Date().toISOString()
+                        };
+                        db.chats.push(newMsg);
+                        saveDb();
+                    }
+                }
+            }
+            // Remove processed ones
+            db.pendingPurchases = db.pendingPurchases || [];
+            db.pendingPurchases = db.pendingPurchases.filter(p => p.tickDelay > 0);
+
+            // Decrement tickDelay for remaining pending ones
+            db.pendingPurchases.forEach(p => {
+                p.tickDelay--;
             });
 
-            // Create Escrow Order
-            const newOrder = {
-                id: 'ORD-' + (100000 + db.nextOrderId++),
-                productId: targetProd.id,
-                productTitle: targetProd.title,
-                price: price,
-                buyer: botUser.username,
-                seller: targetProd.seller,
-                coin: 'USDT',
-                escrowMode: 'multisig',
-                moderator: 'ArbiterNode_Kraken',
-                status: 'funded',
-                shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
-                trackingNumber: null,
-                reviewed: false,
-                timestamp: new Date().toISOString()
-            };
+            // B) Check for new interest (35% chance to start negotiation on a human product)
+            const humanProducts = db.products.filter(p => 
+                !p.isAuction && 
+                !p.sold &&
+                !botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
+                !db.orders.some(o => o.productId === p.id) &&
+                !db.pendingPurchases.some(pp => pp.productId === p.id)
+            );
 
-            db.orders.push(newOrder);
-            targetProd.sold = true;
-            saveDb();
-            console.log(`[BOT ENGINE] El bot ${botUser.username} compró el producto bot "${targetProd.title}" de ${targetProd.seller} por $${price} USD (Escrow iniciado)`);
+            if (humanProducts.length > 0 && Math.random() < 0.35) {
+                const targetProd = humanProducts[Math.floor(Math.random() * humanProducts.length)];
+                const buyingBot = registeredBots[Math.floor(Math.random() * registeredBots.length)];
+                
+                // Bot sends an interest message first using helper
+                const interestMsgText = await generateBotInterestMessage(buyingBot, targetProd.title, targetProd.seller);
+                const newMsg = {
+                    id: db.chats.length + 1,
+                    from: buyingBot.username,
+                    to: targetProd.seller,
+                    text: interestMsgText,
+                    productTitle: targetProd.title,
+                    productId: targetProd.id,
+                    timestamp: new Date().toISOString()
+                };
+                db.chats.push(newMsg);
+                
+                // Add to pendingPurchases
+                db.pendingPurchases.push({
+                    productId: targetProd.id,
+                    productTitle: targetProd.title,
+                    price: parseFloat(targetProd.price),
+                    buyer: buyingBot.username,
+                    seller: targetProd.seller,
+                    tickDelay: 1 // buy on next tick
+                });
+                saveDb();
+                console.log(`[BOT ENGINE] El bot ${buyingBot.username} inició negociación por el producto human "${targetProd.title}" de ${targetProd.seller}. Compra programada.`);
+            }
+
+            // 3. ALWAYS check for active human auctions to bid on
+            const humanAuctions = db.products.filter(p => 
+                p.isAuction && 
+                !p.auctionFinalized && 
+                !botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
+                (p.auctionEnd && new Date(p.auctionEnd) > new Date())
+            );
+            if (humanAuctions.length > 0 && Math.random() < 0.40) {
+                const targetAuction = humanAuctions[Math.floor(Math.random() * humanAuctions.length)];
+                const biddingBot = registeredBots.find(b => b.username !== targetAuction.highestBidder);
+                if (biddingBot) {
+                    const minBid = targetAuction.highestBidder ? targetAuction.price + 5.00 : targetAuction.price;
+                    
+                    if (parseFloat(biddingBot.profileData.balance) < minBid) {
+                        botDeposit(biddingBot.username, minBid + 100.00);
+                    }
+
+                    if (targetAuction.highestBidder) {
+                        const prevBidder = db.users.find(u => u.username.toLowerCase() === targetAuction.highestBidder.toLowerCase());
+                        if (prevBidder) {
+                            prevBidder.profileData.balance = parseFloat(prevBidder.profileData.balance) + parseFloat(targetAuction.price);
+                            db.transactions.push({
+                                username: prevBidder.username,
+                                type: 'deposit',
+                                coin: 'USDT',
+                                amount: targetAuction.price,
+                                usdValue: targetAuction.price,
+                                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    biddingBot.profileData.balance = parseFloat(biddingBot.profileData.balance) - minBid;
+                    db.transactions.push({
+                        username: biddingBot.username,
+                        type: 'withdrawal',
+                        coin: 'USDT',
+                        amount: minBid,
+                        usdValue: minBid,
+                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                        timestamp: new Date().toISOString()
+                    });
+
+                    targetAuction.price = minBid;
+                    targetAuction.highestBidder = biddingBot.username;
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${biddingBot.username} pujó automáticamente $${minBid} USD en la subasta del human: ${targetAuction.title}`);
+                }
+            }
+
+            // 3.5 Proactive question from bot to human seller
+            if (humanProducts.length > 0 && Math.random() < 0.30) {
+                const targetProd = humanProducts[Math.floor(Math.random() * humanProducts.length)];
+                const botUser = registeredBots[Math.floor(Math.random() * registeredBots.length)];
+                
+                const chatExists = db.chats.some(c => 
+                    c.from.toLowerCase() === botUser.username.toLowerCase() && 
+                    c.to.toLowerCase() === targetProd.seller.toLowerCase() &&
+                    c.productId === targetProd.id
+                );
+                
+                if (!chatExists) {
+                    const proactiveText = await generateBotProactiveMessage(botUser, targetProd.title, targetProd.seller);
+                    
+                    const newMsg = {
+                        id: db.chats.length + 1,
+                        from: botUser.username,
+                        to: targetProd.seller,
+                        text: proactiveText,
+                        productTitle: targetProd.title,
+                        productId: targetProd.id,
+                        timestamp: new Date().toISOString()
+                    };
+                    db.chats.push(newMsg);
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${botUser.username} le envió una pregunta al humano ${targetProd.seller} sobre "${targetProd.title}": "${proactiveText}"`);
+                }
+            }
+        }
+
+        // 3.6 Scan and reply to pending human chats
+        const conversations = {};
+        db.chats.forEach(msg => {
+            const fromLower = msg.from.toLowerCase();
+            const toLower = msg.to.toLowerCase();
+            const isBotTo = botsList.some(b => b.username.toLowerCase() === toLower);
+            const isBotFrom = botsList.some(b => b.username.toLowerCase() === fromLower);
+            
+            // Message between human and bot
+            if ((isBotTo && !isBotFrom) || (!isBotTo && isBotFrom)) {
+                const human = isBotTo ? msg.from : msg.to;
+                const bot = isBotTo ? msg.to : msg.from;
+                const key = `${human.toLowerCase()}:${bot.toLowerCase()}`;
+                
+                if (!conversations[key] || new Date(msg.timestamp) > new Date(conversations[key].lastMsg.timestamp)) {
+                    conversations[key] = {
+                        human,
+                        bot,
+                        lastMsg: msg
+                    };
+                }
+            }
+        });
+
+        for (const key in conversations) {
+            const conv = conversations[key];
+            // If the last message was from a human to a bot, and has not been replied to yet:
+            if (conv.lastMsg.from.toLowerCase() === conv.human.toLowerCase() && !conv.lastMsg.replied) {
+                const botUser = registeredBots.find(u => u.username.toLowerCase() === conv.bot.toLowerCase());
+                if (botUser) {
+                    // Set replied lock immediately before async operations to prevent duplicate responders
+                    conv.lastMsg.replied = true;
+                    saveDb();
+
+                    console.log(`[BOT ENGINE] Bot ${botUser.username} detected pending message from human ${conv.human}. Generating reply...`);
+                    
+                    let botAnswerText = "";
+                    if (llmCallsThisTick < MAX_LLM_CALLS_PER_TICK) {
+                        llmCallsThisTick++;
+                        try {
+                            botAnswerText = await generateGroqResponse(botUser, conv.lastMsg.text, conv.lastMsg.productTitle, conv.human);
+                        } catch (e) {
+                            console.warn("[BOT ENGINE] Error calling generateGroqResponse, using fallback:", e.message);
+                            botAnswerText = getLocalBotResponse(botUser, conv.lastMsg.text, conv.lastMsg.productTitle);
+                        }
+                    } else {
+                        botAnswerText = getLocalBotResponse(botUser, conv.lastMsg.text, conv.lastMsg.productTitle);
+                    }
+                    
+                    const botMsg = {
+                        id: db.chats.length + 1,
+                        from: botUser.username,
+                        to: conv.human,
+                        text: botAnswerText,
+                        productTitle: conv.lastMsg.productTitle || null,
+                        productId: conv.lastMsg.productId || null,
+                        timestamp: new Date().toISOString()
+                    };
+                    db.chats.push(botMsg);
+                    saveDb();
+                    console.log(`[BOT ENGINE] Bot ${botUser.username} respondió a ${conv.human} en simulación: "${botAnswerText}"`);
+                }
+            }
+        }
+
+        if (!chatsOnly) {
+            // 4. Run background simulation actions for 3 to 5 randomly selected bots
+            const numBotsToSimulate = Math.floor(3 + Math.random() * 3); // 3 to 5
+            const shuffledBots = [...registeredBots].sort(() => 0.5 - Math.random());
+            const botsToSimulate = shuffledBots.slice(0, numBotsToSimulate);
+
+            for (const botUser of botsToSimulate) {
+                const randomAction = Math.floor(Math.random() * 5); // 0 to 4
+                
+                if (randomAction === 0) {
+                    const isAuction = Math.random() > 0.5;
+                    let productData = null;
+                    
+                    if (llmCallsThisTick < MAX_LLM_CALLS_PER_TICK) {
+                        llmCallsThisTick++;
+                        try {
+                            productData = await generateBotProduct(botUser);
+                        } catch (err) {
+                            console.error("[BOT ENGINE] Error generating AI product, using template:", err.message);
+                        }
+                    }
+                    
+                    if (!productData) {
+                        productData = generateY2KProductCombinatorial(botUser);
+                    }
+
+                    const alreadyListed = db.products.some(p => p.title === productData.title && p.seller === botUser.username);
+                    if (alreadyListed) continue;
+
+                    let auctionEnd = null;
+                    if (isAuction) {
+                        auctionEnd = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+                    }
+
+                    // Map image dynamically
+                    const imageUrl = getRetroImageUrl(productData.title, productData.category, productData.imageKeyword);
+
+                    const newProduct = {
+                        id: db.nextProductId++,
+                        title: productData.title,
+                        description: productData.desc,
+                        price: parseFloat(productData.price),
+                        seller: botUser.username,
+                        category: isAuction ? 'Subastas' : (productData.category || 'Electronics'),
+                        condition: productData.condition || 'Usado - Buen Estado',
+                        icon: productData.icon || '📦',
+                        location: botUser.profileData.location,
+                        image: imageUrl,
+                        isAuction: isAuction,
+                        auctionEnd: auctionEnd,
+                        auctionFinalized: false,
+                        highestBidder: null,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    db.products.push(newProduct);
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${botUser.username} publicó un producto: ${newProduct.title} en categoría "${newProduct.category}" (${isAuction ? 'Subasta' : 'Venta directa'})`);
+                    
+                } else if (randomAction === 1) {
+                    const activeAuctions = db.products.filter(p => p.isAuction && !p.auctionFinalized && p.seller !== botUser.username && p.highestBidder !== botUser.username && (p.auctionEnd && new Date(p.auctionEnd) > new Date()));
+                    if (activeAuctions.length === 0) continue;
+
+                    const targetAuction = activeAuctions[Math.floor(Math.random() * activeAuctions.length)];
+                    const minBid = targetAuction.highestBidder ? targetAuction.price + 1.00 : targetAuction.price;
+                    
+                    if (parseFloat(botUser.profileData.balance) < minBid) {
+                        const depositAmount = minBid + 100.00;
+                        botDeposit(botUser.username, depositAmount);
+                    }
+
+                    if (targetAuction.highestBidder) {
+                        const prevBidder = db.users.find(u => u.username.toLowerCase() === targetAuction.highestBidder.toLowerCase());
+                        if (prevBidder) {
+                            prevBidder.profileData.balance = parseFloat(prevBidder.profileData.balance) + parseFloat(targetAuction.price);
+                            db.transactions.push({
+                                username: prevBidder.username,
+                                type: 'deposit',
+                                coin: 'USDT',
+                                amount: targetAuction.price,
+                                usdValue: targetAuction.price,
+                                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                    }
+
+                    botUser.profileData.balance = parseFloat(botUser.profileData.balance) - minBid;
+                    db.transactions.push({
+                        username: botUser.username,
+                        type: 'withdrawal',
+                        coin: 'USDT',
+                        amount: minBid,
+                        usdValue: minBid,
+                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                        timestamp: new Date().toISOString()
+                    });
+
+                    targetAuction.price = minBid;
+                    targetAuction.highestBidder = botUser.username;
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${botUser.username} pujó $${minBid} USD en la subasta: ${targetAuction.title}`);
+
+                } else if (randomAction === 2) {
+                    const writeNewThread = Math.random() > 0.5;
+                    db.threads = db.threads || [];
+                    
+                    if (writeNewThread || db.threads.length === 0) {
+                        let threadData = null;
+                        if (llmCallsThisTick < MAX_LLM_CALLS_PER_TICK) {
+                            llmCallsThisTick++;
+                            try {
+                                threadData = await generateBotForumThread(botUser);
+                            } catch (err) {
+                                console.error("[BOT ENGINE] Error generating AI forum thread:", err.message);
+                            }
+                        }
+                        
+                        if (!threadData) {
+                            const template = botForumThreads[Math.floor(Math.random() * botForumThreads.length)];
+                            threadData = {
+                                category: template.category,
+                                title: template.title,
+                                content: template.content
+                            };
+                        }
+                        
+                        const alreadyExists = db.threads.some(t => t.title === threadData.title);
+                        if (alreadyExists) continue;
+
+                        const newThread = {
+                            id: db.nextThreadId++,
+                            category: threadData.category || 'security',
+                            title: threadData.title,
+                            author: botUser.username,
+                            content: threadData.content,
+                            replies: [],
+                            timestamp: new Date().toISOString()
+                        };
+                        db.threads.push(newThread);
+                        saveDb();
+                        console.log(`[BOT ENGINE] El bot ${botUser.username} creó un nuevo hilo en el foro: "${newThread.title}"`);
+                    } else {
+                        const targetThread = db.threads[Math.floor(Math.random() * db.threads.length)];
+                        let replyContent = null;
+                        
+                        if (llmCallsThisTick < MAX_LLM_CALLS_PER_TICK) {
+                            llmCallsThisTick++;
+                            try {
+                                replyContent = await generateBotForumReply(botUser, targetThread);
+                            } catch (err) {
+                                console.error("[BOT ENGINE] Error generating AI forum reply:", err.message);
+                            }
+                        }
+                        
+                        if (!replyContent) {
+                            const replyPool = botForumReplies.find(r => r.category === targetThread.category);
+                            if (replyPool) {
+                                replyContent = replyPool.replies[Math.floor(Math.random() * replyPool.replies.length)];
+                            } else {
+                                replyContent = "Interesante tema, gracias por compartir.";
+                            }
+                        }
+                        
+                        const newReply = {
+                            author: botUser.username,
+                            content: replyContent,
+                            timestamp: new Date().toISOString()
+                        };
+                        targetThread.replies = targetThread.replies || [];
+                        targetThread.replies.push(newReply);
+                        saveDb();
+                        console.log(`[BOT ENGINE] El bot ${botUser.username} respondió en el hilo: "${targetThread.title}"`);
+                    }
+                    
+                } else if (randomAction === 3) {
+                    const activeOrders = db.orders.filter(o => 
+                        o.status !== 'completed' && 
+                        (botsList.some(b => b.username.toLowerCase() === o.buyer.toLowerCase()) || 
+                         botsList.some(b => b.username.toLowerCase() === o.seller.toLowerCase()))
+                    );
+                    if (activeOrders.length === 0) continue;
+
+                    const targetOrder = activeOrders[Math.floor(Math.random() * activeOrders.length)];
+                    const isBotSeller = botsList.some(b => b.username.toLowerCase() === targetOrder.seller.toLowerCase());
+                    
+                    if (targetOrder.status === 'funded' && isBotSeller) {
+                        targetOrder.status = 'shipped';
+                        targetOrder.trackingNumber = 'USPS-BOT-' + Math.floor(100000000 + Math.random() * 900000000);
+                        saveDb();
+                        console.log(`[BOT ENGINE] El bot vendedor ${targetOrder.seller} registró el envío para el pedido: ${targetOrder.id}`);
+                    } else if (targetOrder.status === 'shipped' && !isBotSeller) {
+                        targetOrder.status = 'completed';
+                        
+                        const sellerUser = db.users.find(u => u.username.toLowerCase() === targetOrder.seller.toLowerCase());
+                        if (sellerUser) {
+                            const feeRate = 0.05; // 5% marketplace commission
+                            const priceVal = parseFloat(targetOrder.price);
+                            const feeVal = priceVal * feeRate;
+                            const netAmount = priceVal - feeVal;
+
+                            sellerUser.profileData.balance = parseFloat(sellerUser.profileData.balance) + netAmount;
+                            db.transactions.push({
+                                username: sellerUser.username,
+                                type: 'deposit',
+                                coin: targetOrder.coin,
+                                amount: netAmount,
+                                usdValue: netAmount,
+                                txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                        
+                        const buyerBot = botsList.find(b => b.username.toLowerCase() === targetOrder.buyer.toLowerCase());
+                        
+                        // Generate dynamic AI comment and MSN message
+                        const reviewComment = await generateBotReviewComment(buyerBot, targetOrder.productTitle, targetOrder.seller);
+                        const thankYouMessage = await generateBotCompletionMessage(buyerBot, targetOrder.productTitle, targetOrder.seller);
+
+                        // Bot buyer leaves review automatically
+                        const botReview = {
+                            id: db.reviews.length + 1,
+                            orderId: targetOrder.id,
+                            rating: 5,
+                            comment: reviewComment,
+                            fromUser: targetOrder.buyer,
+                            toUser: targetOrder.seller,
+                            timestamp: new Date().toISOString()
+                        };
+                        db.reviews.push(botReview);
+                        targetOrder.reviewed = true;
+                        
+                        saveDb();
+                        console.log(`[BOT ENGINE] El bot comprador ${targetOrder.buyer} liberó los fondos del pedido: ${targetOrder.id} y dejó una reseña.`);
+
+                        // Send MSN message to thank the human seller
+                        const newMsg = {
+                            id: db.chats.length + 1,
+                            from: targetOrder.buyer,
+                            to: targetOrder.seller,
+                            text: thankYouMessage,
+                            productTitle: targetOrder.productTitle,
+                            productId: targetOrder.productId,
+                            timestamp: new Date().toISOString()
+                        };
+                        db.chats.push(newMsg);
+                        saveDb();
+                    }
+                } else if (randomAction === 4) {
+                    // Find products listed by bot users that are direct sales
+                    const botProducts = db.products.filter(p => 
+                        !p.isAuction && 
+                        !p.sold &&
+                        botsList.some(b => b.username.toLowerCase() === p.seller.toLowerCase()) &&
+                        !db.orders.some(o => o.productId === p.id)
+                    );
+                    if (botProducts.length === 0) continue;
+
+                    const targetProd = botProducts[Math.floor(Math.random() * botProducts.length)];
+                    const price = parseFloat(targetProd.price);
+
+                    if (parseFloat(botUser.profileData.balance) < price) {
+                        const depositAmount = price + 100.00;
+                        botDeposit(botUser.username, depositAmount);
+                    }
+
+                    botUser.profileData.balance = parseFloat(botUser.profileData.balance) - price;
+                    
+                    db.transactions.push({
+                        username: botUser.username,
+                        type: 'withdrawal',
+                        coin: 'USDT',
+                        amount: price,
+                        usdValue: price,
+                        txHash: '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+                        timestamp: new Date().toISOString()
+                    });
+
+                    const newOrder = {
+                        id: 'ORD-' + (100000 + db.nextOrderId++),
+                        productId: targetProd.id,
+                        productTitle: targetProd.title,
+                        price: price,
+                        buyer: botUser.username,
+                        seller: targetProd.seller,
+                        coin: 'USDT',
+                        escrowMode: 'multisig',
+                        moderator: 'ArbiterNode_Kraken',
+                        status: 'funded',
+                        shippingAddress: 'Dirección cifrada con PGP - Nodo Bot',
+                        trackingNumber: null,
+                        reviewed: false,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    db.orders.push(newOrder);
+                    targetProd.sold = true;
+                    saveDb();
+                    console.log(`[BOT ENGINE] El bot ${botUser.username} compró el producto bot "${targetProd.title}" de ${targetProd.seller} por $${price} USD (Escrow iniciado)`);
+                }
+            }
+
+            // 5. Check marketplace active listings count and populate if empty
+            const activeListings = db.products.filter(p => !p.sold);
+            if (activeListings.length < 15) {
+                const toAdd = 15 - activeListings.length;
+                console.log(`[BOT ENGINE] Mercado vacío detectado (${activeListings.length} productos). Añadiendo ${toAdd} productos combinatorios para repoblar...`);
+                for (let k = 0; k < toAdd; k++) {
+                    const randomBotUser = registeredBots[Math.floor(Math.random() * registeredBots.length)];
+                    const productData = generateY2KProductCombinatorial(randomBotUser);
+                    const imageUrl = getRetroImageUrl(productData.title, productData.category, productData.imageKeyword);
+                    
+                    const newProduct = {
+                        id: db.nextProductId++,
+                        title: productData.title,
+                        description: productData.desc,
+                        price: parseFloat(productData.price),
+                        seller: randomBotUser.username,
+                        category: productData.category,
+                        condition: productData.condition,
+                        icon: productData.icon,
+                        location: randomBotUser.profileData.location,
+                        image: imageUrl,
+                        isAuction: Math.random() > 0.7, // 30% chance for subasta
+                        auctionEnd: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours
+                        auctionFinalized: false,
+                        highestBidder: null,
+                        timestamp: new Date().toISOString()
+                    };
+                    db.products.push(newProduct);
+                }
+                saveDb();
+                console.log(`[BOT ENGINE] Mercado repoblado con éxito. Ahora tiene al menos 15 listados activos.`);
+            }
         }
     } catch (err) {
         console.error("Error en simulación de bot:", err);
@@ -2194,10 +2344,22 @@ async function simulateBotActivity() {
 // =========================================================================
 
 // GET and POST endpoint to run the bot simulation round
+let lastSimulateTime = 0;
+const SIMULATE_COOLDOWN_MS = 30000; // 30 seconds cooldown
+
 app.all('/api/bots/simulate', async (req, res) => {
     try {
-        console.log("[BOT ENGINE] Invocando ronda de simulación de bots via API...");
-        await simulateBotActivity();
+        const chatsOnly = req.query.chatsOnly === 'true' || req.body?.chatsOnly === true;
+        const now = Date.now();
+        if (!chatsOnly && (now - lastSimulateTime < SIMULATE_COOLDOWN_MS)) {
+            return res.json({ success: true, message: "Simulación omitida por cooldown (30s)." });
+        }
+        if (!chatsOnly) {
+            lastSimulateTime = now;
+        }
+
+        console.log(`[BOT ENGINE] Invocando ronda de simulación de bots via API (chatsOnly: ${chatsOnly})...`);
+        await simulateBotActivity(chatsOnly);
         res.json({ success: true, message: "Simulación de bots ejecutada con éxito." });
     } catch (err) {
         console.error("[BOT ENGINE] Error al ejecutar simulación via API:", err);
@@ -2209,8 +2371,8 @@ app.all('/api/bots/simulate', async (req, res) => {
 if (!process.env.VERCEL) {
     // Local mode: connect to Mongo and run local intervals
     connectToMongo().then(() => {
-        setTimeout(simulateBotActivity, 5000);
-        setInterval(simulateBotActivity, 25000);
+        setTimeout(() => simulateBotActivity(false), 5000);
+        setInterval(() => simulateBotActivity(false), 25000);
     });
 
     // Serve static assets from compilation folder locally
